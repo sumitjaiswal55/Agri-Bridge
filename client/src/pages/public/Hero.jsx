@@ -1,0 +1,55 @@
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import "./Home.css"; // Custom styling
+
+// import img1 from "../../assets/1.png";
+// import img2 from "../../assets/2.png";
+// import img3 from "../../assets/3.png";
+
+const Hero = () => {
+  return (
+    <section className="hero-section">
+      <div className="container hero-container">
+        <div className="hero-content">
+          <span className="badge">🌱 Empowering Farmers</span>
+          <h1 className="hero-title">
+            Bridging the Gap Between <span className="highlight">Farms</span> & <span className="highlight">Markets</span>
+          </h1>
+          <p className="hero-subtitle">
+            Eliminate middlemen. Get fair prices. AgriBridge connects farmers directly with bulk buyers and transporters for a transparent supply chain.
+          </p>
+          <div className="hero-actions">
+            <button className="btn btn-lg btn-filled">Get Started</button>
+            <button className="btn btn-lg btn-text">Learn More ↓</button>
+          </div>
+          
+          <div className="hero-stats">
+            <div className="stat-item">
+              <h3>500+</h3>
+              <p>Farmers</p>
+            </div>
+            <div className="stat-item">
+              <h3>120+</h3>
+              <p>Hotels/Buyers</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="hero-image-wrapper">
+          {/* यहाँ अपनी Image लगाएं */}
+          <img 
+            src="https://images.unsplash.com/photo-1595814433582-e28430e52b27?q=80&w=1000&auto=format&fit=crop" 
+            alt="Farmer holding crops" 
+            className="hero-image" 
+          />
+          <div className="floating-card">
+            <span>🌾 Fair Price Guaranteed</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
