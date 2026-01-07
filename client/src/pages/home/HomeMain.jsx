@@ -1,18 +1,18 @@
 import Hero from "./Hero.jsx";
 import About from "./About.jsx";
 import Process from "./Process.jsx";
+
 import "./Home.css";
 import Vision from "./Vision.jsx";
 
-function HomeMain(){
-    return(
-        <>
-        <Hero/>
-        <About />
-        <Process />
-        <Vision />
-        </>
-    )
-}
+const HomeMain = () => {
+  return (
+    <div className="landing-page">
+      <Hero />
+      <Process />
+      <Vision />
+    </div>
+  );
+};
 
 export default HomeMain;
