@@ -17,16 +17,16 @@ const UserSchema = new mongoose.Schema(
             required: true,
 
         },
-        role: {
-            type: String,
-            enum: ["farmer", "buyer", "seller"],
-            default: "buyer"
-        },
         phone: {
             type: Number,
             required: true,
             maxLength: 10,
             minLength: 10
+        },
+        role: {
+            type: String,
+            enum: ["farmer", "buyer", "seller"],
+            default: "buyer"
         },
         location: {
             type: {

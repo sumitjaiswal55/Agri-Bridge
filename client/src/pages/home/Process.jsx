@@ -1,3 +1,5 @@
+
+
 const Process = () => {
   const steps = [
     { id: 1, title: "Cultivate", desc: "Farmers grow high-quality organic produce.", icon: "🌱" },

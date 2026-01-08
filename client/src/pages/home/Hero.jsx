@@ -28,7 +28,6 @@ const Hero = () => {
         </div>
         
         <div className="hero-image-wrapper">
-          {/* यहाँ अपनी Image लगाएं */}
           <img 
             src="https://images.unsplash.com/photo-1595814433582-e28430e52b27?q=80&w=1000&auto=format&fit=crop" 
             alt="Farmer holding crops" 

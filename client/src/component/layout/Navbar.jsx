@@ -1,8 +1,11 @@
 // import logo from '../../assets/logo.png';
 import { useState, useEffect } from "react";
+import Signup from "../../pages/auth/Signup";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -25,7 +28,7 @@ const Navbar = () => {
 
         <div className="nav-buttons">
           <button className="btn btn-outline">Login</button>
-          <button className="btn btn-filled">Register</button>
+          <button className="btn btn-filled" onClick={() => navigate("/signup")} >Register</button>
         </div>
       </div>
     </nav>
