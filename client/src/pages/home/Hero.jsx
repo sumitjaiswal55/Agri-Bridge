@@ -29,7 +29,7 @@ const Hero = () => {
         
         <div className="hero-image-wrapper">
           <img 
-            src="https://images.unsplash.com/photo-1595814433582-e28430e52b27?q=80&w=1000&auto=format&fit=crop" 
+            src="https://images.unsplash.com/photo-1560947331-ff7ef4e78f26?q=80&w=1539&v=2" 
             alt="Farmer holding crops" 
             className="hero-image" 
           />

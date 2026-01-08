@@ -71,62 +71,7 @@ body {
   font-size: 1.1rem;
 }
 
-/* --- 3. Navbar --- */
-.navbar {
-  height: var(--nav-height);
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: transparent;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-}
 
-.navbar.scrolled {
-  background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  backdrop-filter: blur(10px);
-}
-
-.nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.navbar-brand {
-  font-size: 1.8rem;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.brand-agri { color: var(--primary-green); }
-.brand-bridge { color: var(--text-dark); }
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 40px;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: var(--text-dark);
-  font-weight: 500;
-  transition: var(--transition);
-}
-
-.nav-links a:hover {
-  color: var(--primary-green);
-}
-
-.nav-buttons {
-  display: flex;
-  gap: 15px;
-}
 
 /* --- 4. Hero Section --- */
 .hero-section {
@@ -278,9 +223,10 @@ body {
 }
 
 /* --- 6. Vision Section --- */
+/* --- Vision Section Layout --- */
 .vision-section {
-  padding: 100px 0;
-  background-color: #f3f4f6;
+  padding: 80px 0;
+  background-color: #f9fbf9; /* Very light green tint */
 }
 
 .vision-container {
@@ -290,33 +236,107 @@ body {
   align-items: center;
 }
 
+/* --- Image Styling --- */
+.vision-image {
+  position: relative;
+}
+
 .vision-image img {
   width: 100%;
-  border-radius: 20px;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  object-fit: cover;
+}
+
+/* --- Content Styling --- */
+.sub-heading {
+  color: var(--primary-green); /* Tumhara theme color */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
 }
 
 .vision-content h2 {
   font-size: 2.5rem;
-  color: var(--primary-green);
+  font-weight: 800;
+  color: var(--text-dark);
   margin-bottom: 20px;
+  line-height: 1.2;
 }
 
-.vision-content p {
+.vision-desc {
+  color: #555;
   font-size: 1.1rem;
-  color: var(--text-light);
+  line-height: 1.6;
   margin-bottom: 30px;
 }
 
+/* --- Vision Points Styling (Specific Request) --- */
 .vision-points {
   list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
-.vision-points li {
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  font-weight: 500;
+.point-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
 }
+
+.vision-icon-box {
+  background-color: var(--primary-green); 
+  color: white;
+  min-width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 2px; /* Thoda adjust heading ke saath align karne ke liye */
+  box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+}
+
+.point-text h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 5px;
+}
+
+.point-text p {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  .vision-container {
+    grid-template-columns: 1fr; /* Stack one below other */
+    gap: 40px;
+  }
+  
+  .vision-content h2 {
+    font-size: 2rem;
+  }
+  
+  .point-item {
+    align-items: flex-start;
+  }
+}
+
+
 
 /* --- Footer --- */
 .footer {
@@ -346,3 +366,128 @@ body {
     display: none;
   }
 }
+
+/* --- 7. About Section --- */
+.about-section {
+  padding: 100px 0;
+  background-color: var(--white);
+  overflow: hidden; /* To handle decorative elements */
+}
+
+.about-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px; /* Space between video and text */
+  align-items: center;
+}
+
+/* Video Styling */
+.about-video-wrapper {
+  position: relative;
+  padding-left: 20px; /* Space for accent box */
+}
+
+.video-frame {
+  position: relative;
+  z-index: 2;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(28, 108, 44, 0.15);
+  line-height: 0; /* Remove bottom spacing for video */
+}
+
+.about-video {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Decorative box behind video */
+.video-accent-box {
+  position: absolute;
+  top: 20px;
+  left: -20px; /* Pulls it to the left */
+  width: 100%;
+  height: 100%;
+  border: 3px solid var(--accent-lime);
+  border-radius: 24px;
+  z-index: 1;
+}
+
+/* Content Styling */
+.about-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.highlight {
+  color: var(--primary-green);
+}
+
+.section-description {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  margin-bottom: 15px;
+  line-height: 1.8;
+}
+
+.mt-4 {
+  margin-top: 25px;
+}
+
+/* Orange/Amber Accent Button (Matches your previous preference) */
+.btn-accent {
+  background-color: var(--primary-green); /* Your original orange color */
+  color: white;
+  padding: 14px 32px;
+  border-radius: 50px; /* Pill shape */
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-block;
+  width: fit-content;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(251, 156, 36, 0.3);
+}
+
+.btn-accent:hover {
+  background-color: #e68a1c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(251, 156, 36, 0.4);
+}
+
+/* Responsive for Mobile */
+@media (max-width: 900px) {
+  .about-container {
+    grid-template-columns: 1fr; /* Stack vertically */
+    gap: 50px;
+    text-align: center;
+  }
+
+  .about-video-wrapper {
+    padding-left: 0;
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .video-accent-box {
+    left: 10px;
+    top: 10px;
+  }
+  
+  .btn-accent {
+    margin: 20px auto 0 auto; /* Center button on mobile */
+  }
+}
+
+
+
+

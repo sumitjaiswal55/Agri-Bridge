@@ -1,44 +1,39 @@
-import logo from "../../assets/logo.png";
+import React from "react";
+import logo from "../../assets/logo.png"; // Path check kar lena
 
-function Footer() {
+const Footer = () => {
   return (
-    <>
-      
-        {/* Card 1 */}
-        <footer
-          style={{
-            backgroundColor: "#e6fce7",
-            padding: "30px 0",
-            marginTop: "50px"
-          }}
-        >
-          <div className="container text-center fs-5">
-            <img src={logo} />
-            <p className="mb-2 fw-bold">
-              Empowering Farmers. Connecting Markets. Growing Together.
-            </p>
+    <footer className="footer-section">
+      <div className="container footer-content">
+        
+        {/* Logo & Tagline */}
+        <div className="footer-brand">
+          <img src={logo} alt="AgriBridge Logo" className="footer-logo" />
+          <p className="footer-tagline">
+            Empowering Farmers. Connecting Markets. Growing Together.
+          </p>
+        </div>
 
-            <div className="mb-3 fw-semibold">
-              <a href="#" className="me-3 text-dark text-decoration-none">
-                About Us
-              </a>
-              <a href="#" className="me-3 text-dark text-decoration-none">
-                Our Services
-              </a>
-              <a href="#" className="text-dark text-decoration-none">
-                Contact Us
-              </a>
-            </div>
+        {/* Navigation Links */}
+        <div className="footer-nav">
+          <a href="/aboutus" className="footer-link">About Us</a>
+          <a href="/services" className="footer-link">Our Services</a>
+          <a href="/contact" className="footer-link">Contact Us</a>
+        </div>
 
-            <p style={{ fontSize: "14px", color: "#555" }}>
-              © {new Date().getFullYear()} AgriBridge. Made with ❤️ by Sumit
-              | BCA Project
-            </p>
-          </div>
-        </footer>
-      
-    </>
+        {/* Divider Line */}
+        <div className="footer-divider"></div>
+
+        {/* Copyright & Credits */}
+        <div className="footer-credits">
+          <p>
+            &copy; {new Date().getFullYear()} <strong>AgriBridge</strong>. Made with ❤️ by <strong>Sumit</strong> | BCA Project
+          </p>
+        </div>
+
+      </div>
+    </footer>
   );
-}
+};
 
 export default Footer;
