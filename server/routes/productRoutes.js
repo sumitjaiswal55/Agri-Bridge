@@ -1,16 +1,30 @@
 const express = require("express");
 const router = express.Router();
-const {createListing, updateListing, deleteListing} =  require("../controller/listingController.js");
-const protect = require("../middleware/authMiddleware.js")
+const { 
+    createListing, 
+    updateListing, 
+    deleteListing, 
+    getAllListings, 
+    getMyListings 
+} = require("../controller/listingController.js");
+const protect = require("../middleware/authMiddleware.js");
 
-router.post("/create", protect, createListing);
-router.route("/:id", protect,)
-  .put(updateListing)
+// Image Upload Config
+const multer = require("multer");
+const { storage } = require("../config/cloudinary.js");
+const upload = multer({ storage });
 
-router.route("/:id", protect,)
-  .delete(deleteListing);
+// --- Routes ---
 
-// getallListings
-// getnearbyListings
+// Public Route (Home Page)
+router.get("/all", getAllListings);
+
+// Protected Routes
+router.post("/create", protect, upload.array("images", 5), createListing);
+router.get("/my-listings", protect, getMyListings); // Dashboard ke liye
+
+router.route("/:id")
+  .put(protect, updateListing)
+  .delete(protect, deleteListing);
 
 module.exports = router;

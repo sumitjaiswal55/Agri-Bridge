@@ -1,10 +1,11 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const mongoDB = require("./config/db.js");
 const port = 3000
+
 const userRoute = require("./routes/userRoutes.js");
 const productRoute = require("./routes/productRoutes.js");
-require('dotenv').config();
 const cors = require("cors");
 
 
@@ -12,7 +13,6 @@ app.use(cors({
   origin: "http://localhost:5173", // Tumhare Frontend ka URL (Vite default)
   credentials: true // Cookies/Session allow karne ke liye
 }));
-
 
 
 
