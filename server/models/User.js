@@ -31,21 +31,20 @@ const UserSchema = new mongoose.Schema(
         location: {
             type: {
                 type: String,
-                enum: ["Point"], // GeoJSON type must be 'Point'
+                enum: ["Point"],
                 default: "Point",
             },
             coordinates: {
-                type: [Number], // [longitude, latitude] - Order matters!
+                type: [Number], 
                 required: true,
             },
             address: {
-                type: String, // Human readable address for UI
+                type: String, 
             },
         },
-        // Farmer specific details
         farmDetails: {
-            size: Number, // in acres (optional, analytics ke liye)
-            crops: [String], // ["Tomato", "Potato"] - Tags for search
+            size: Number, 
+            crops: [String],
         },
         // Buyer specific details
         businessName: {

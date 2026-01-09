@@ -44,9 +44,9 @@ const Navbar = () => {
         {/* Navigation Links & Buttons Wrapper */}
         <div className={`nav-menu ${isOpen ? "active" : ""}`}>
           <ul className="nav-links">
-            <li><a href="#about" onClick={closeMenu}>About Us</a></li>
-            <li><a href="#services" onClick={closeMenu}>Our Services</a></li>
-            <li><a href="#process" onClick={closeMenu}>How it Works</a></li>
+            <li><a href="/about" onClick={closeMenu}>About Us</a></li>
+            <li><a href="/services" onClick={closeMenu}>Our Services</a></li>
+            <li><a href="/process" onClick={closeMenu}>How it Works</a></li>
           </ul>
 
           <div className="nav-buttons">

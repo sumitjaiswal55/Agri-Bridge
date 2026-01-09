@@ -11,11 +11,10 @@ const Signup = () => {
     email: "",
     password: "",
     phone: "",
-    role: "farmer", // Default
+    role: "buyer", // Default
     address: "",
     latitude: "",
     longitude: "",
-    // Extra fields based on role
     farmSize: "",
     businessName: ""
   });
@@ -56,7 +55,6 @@ const Signup = () => {
     setLoading(true);
 
     // Backend ke liye payload structure
-    // Note: Backend expects coordinates in [Longitude, Latitude] order!
     const payload = {
       name: formData.name,
       email: formData.email,

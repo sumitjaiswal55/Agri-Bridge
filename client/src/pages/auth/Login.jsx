@@ -16,7 +16,7 @@ const Login = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(""); // Clear error when user types
+    setError("");
   };
 
   const handleSubmit = async (e) => {
@@ -35,14 +35,11 @@ const Login = () => {
       const data = await response.json();
 
       if (data.success) {
-        // 1. Token aur User Info ko LocalStorage mein save karo
-        // (Isse hum baad mein check karenge ki user logged in hai ya nahi)
         localStorage.setItem("token", data.data.token);
         localStorage.setItem("userInfo", JSON.stringify(data.data));
 
-        // 2. Role Based Redirect (The Pro Move) 🚀
         if (data.data.role === "farmer") {
-          navigate("/dashboardr");
+          navigate("/dashboard");
         } else {
           navigate("/dashboard/buyer");
         }
@@ -60,9 +57,7 @@ const Login = () => {
   return (
     <div className="auth-wrapper">
       <div className="auth-container">
-        
-        {/* Left Side: Welcome Back Message */}
-        {/* Note: CSS class 'auth-left' Signup wali hi use ho rahi hai consistency ke liye */}
+      
         <div className="auth-left">
           <div className="auth-overlay">
             <h1>Welcome Back!</h1>
@@ -70,7 +65,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Right Side: Login Form */}
         <div className="auth-right">
           <div className="auth-header">
             <h2>Sign In</h2>
