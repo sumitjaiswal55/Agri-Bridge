@@ -21,19 +21,10 @@ const AddListing = () => {
   const [previews, setPreviews] = useState([]);
 
   // Message State (Success / Error)
-  const response = await axios.post("http://localhost:3000/api/create", data, {
-            headers: { "Authorization": `Bearer ${token}` }
-        });
-
-        // 3. Success Handling
-        if(response.data.success) {
-            setSuccess("🎉 Crop listed successfully! Redirecting...");
-            
-            // 2 Second baad redirect karo taaki user message padh le
-            setTimeout(() => {
-                navigate("/dashboard/my-listings"); // ✅ Redirect Logic
-            }, 2000);
-        }
+  const [message, setMessage] = useState({
+    text: "",
+    type: "", // success | error
+  });
 
   const [loading, setLoading] = useState(false);
 
