@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Search, MapPin, ShoppingCart, User, Menu, X, 
-  ChevronLeft, ChevronRight, SlidersHorizontal, 
+  ChevronLeft, ChevronRight,  
   Wheat, Leaf, Apple, Flame, Sprout 
 } from 'lucide-react';
 
 // Product Grid Component ko import kar rahe hain (Next step me banayenge)
-// import ProductGrid from './ProductGrid'; 
+import ProductGrid from './ProductGrid'; 
 import './Buyer.css'; // Separate CSS file
+import Navbar from './Navbar';
+import Filter from "./Filter";
 
 const BuyerDashboard = () => {
   // --- States ---
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [filters, setFilters] = useState({
-    priceRange: [0, 10000],
-    grades: [],
-    location: ''
-  });
 
   // --- Hero Slider Data ---
   const slides = [
@@ -50,44 +44,7 @@ const BuyerDashboard = () => {
   return (
     <div className="dashboard-container">
       
-      {/* ================= NAVIGATION ================= */}
-      <nav className="navbar">
-        <div className="nav-wrapper">
-          <div className="nav-left">
-            <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              <Menu />
-            </button>
-            <div className="brand">
-              <div className="logo-box">A</div>
-              <h1>Agri<span>Bridge</span></h1>
-            </div>
-          </div>
-
-          <div className="nav-center">
-            <div className="search-box">
-              <Search className="search-icon" />
-              <input type="text" placeholder="Search for Crops, Vegetables..." />
-            </div>
-          </div>
-
-          <div className="nav-right">
-            <div className="location-box">
-              <MapPin className="icon-green" />
-              <div>
-                <small>Deliver to</small>
-                <span>Nagpur Mandi</span>
-              </div>
-            </div>
-            <button className="icon-btn cart-btn">
-              <ShoppingCart />
-              <span className="badge">3</span>
-            </button>
-            <button className="icon-btn">
-              <User />
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* ================= HERO SLIDER ================= */}
       <section className="hero-slider">
@@ -129,59 +86,11 @@ const BuyerDashboard = () => {
 
       {/* ================= MAIN LAYOUT (Filter + Products) ================= */}
       <div className="main-layout">
-        
-        {/* Mobile Filter Toggle */}
-        <div className="mobile-filter-bar">
-          <button className="filter-toggle-btn" onClick={() => setMobileFiltersOpen(true)}>
-            <SlidersHorizontal size={18} /> Filters
-          </button>
-        </div>
-
         {/* --- SIDEBAR FILTERS --- */}
-        <aside className={`filter-sidebar ${mobileFiltersOpen ? 'open' : ''}`}>
-          <div className="sidebar-header">
-            <h3>Filters</h3>
-            <button className="close-btn" onClick={() => setMobileFiltersOpen(false)}><X /></button>
-          </div>
-
-          <div className="filter-group">
-            <label>Price Range (per Quintal)</label>
-            <input 
-              type="range" min="0" max="10000" 
-              value={filters.priceRange[1]} 
-              onChange={(e) => setFilters({...filters, priceRange: [0, parseInt(e.target.value)]})}
-            />
-            <div className="price-labels">
-              <span>₹0</span>
-              <span className="price-highlight">₹{filters.priceRange[1]}</span>
-            </div>
-          </div>
-
-          <div className="filter-group">
-            <label>Quality Grade</label>
-            <div className="checkbox-list">
-              {['Grade A', 'Grade B', 'Grade C'].map(g => (
-                <label key={g}><input type="checkbox" /> {g}</label>
-              ))}
-            </div>
-          </div>
-
-          <div className="filter-group">
-            <label>Location</label>
-            <select>
-              <option>All Mandis</option>
-              <option>Nagpur</option>
-              <option>Nashik</option>
-              <option>Pune</option>
-            </select>
-          </div>
-
-          <button className="apply-btn">Apply Filters</button>
-        </aside>
+        <Filter />
 
         {/* --- PRODUCT GRID AREA --- */}
         <main className="product-content-area">
-          {/* Yahan par wo ProductGrid component render hoga jo hum next step me banayenge */}
           <ProductGrid /> 
         </main>
 

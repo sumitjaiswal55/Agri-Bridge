@@ -15,6 +15,13 @@
 }
 
 /* --- NAVIGATION --- */
+:root {
+  --primary-green: #27ae60;
+  --text-dark: #2c3e50;
+  --border-color: #e0e0e0;
+}
+
+/* --- DESKTOP STYLES (Default) --- */
 .navbar {
   background: white;
   border-bottom: 1px solid var(--border-color);
@@ -29,11 +36,19 @@
   margin: 0 auto;
   height: 70px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Isse Logo Left aur Hamburger Right jayega mobile pe */
   align-items: center;
+  width: 100%;
 }
 
-.nav-left { display: flex; align-items: center; gap: 15px; }
+/* LEFT SECTION (Only Logo now) */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
 .brand { display: flex; align-items: center; gap: 10px; }
 .brand h1 { font-size: 22px; color: var(--text-dark); margin: 0; }
 .brand span { color: var(--primary-green); }
@@ -42,33 +57,98 @@
   color: white; display: flex; align-items: center; justify-content: center;
   border-radius: 8px; font-weight: bold;
 }
-.mobile-menu-btn { display: none; background: none; border: none; cursor: pointer; }
 
-.nav-center { flex: 1; max-width: 500px; margin: 0 20px; }
-.search-box { position: relative; }
-.search-box input {
-  width: 100%; padding: 10px 10px 10px 40px;
-  border: 1px solid var(--border-color); border-radius: 8px;
-  outline: none;
+/* CENTER SECTION (Search) */
+.nav-center {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 40px;
 }
-.search-icon { position: absolute; left: 10px; top: 10px; color: #888; width: 18px; }
 
-.nav-right { display: flex; gap: 20px; align-items: center; }
+.search-box { position: relative; width: 100%; }
+.search-box input {
+  width: 100%;
+  padding: 10px 10px 10px 40px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+.search-icon {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: #888; width: 18px;
+}
+
+/* RIGHT SECTION (Actions) */
+.nav-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .location-box { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .location-box div { display: flex; flex-direction: column; line-height: 1.2; }
 .location-box small { font-size: 10px; color: #666; }
-.location-box span { font-weight: bold; font-size: 14px; }
+.location-box span { font-weight: bold; font-size: 14px; color: var(--text-dark); }
 .icon-green { color: var(--primary-green); }
 
 .icon-btn {
   background: none; border: none; position: relative; cursor: pointer;
-  padding: 8px; border-radius: 50%; transition: bg 0.2s;
+  padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
 }
-.icon-btn:hover { background: #eee; }
+.icon-btn:hover { background: #f5f5f5; }
 .badge {
   position: absolute; top: 0; right: 0; background: var(--primary-green);
   color: white; font-size: 10px; width: 16px; height: 16px;
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+
+/* HAMBURGER BUTTON (Right side on Mobile) */
+.mobile-menu-btn {
+  display: none; /* Desktop pe hidden */
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+/* MOBILE MENU DROPDOWN */
+.mobile-menu-container {
+  background: white;
+  border-top: 1px solid #f0f0f0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.mobile-search { width: 100%; }
+.mobile-actions { display: flex; flex-direction: column; gap: 15px; }
+.mobile-item {
+  display: flex; align-items: center; gap: 15px;
+  font-size: 16px; font-weight: 500; color: var(--text-dark);
+  padding: 10px 0; border-bottom: 1px solid #f9f9f9;
+}
+
+/* --- RESPONSIVE RULES --- */
+@media (max-width: 900px) {
+  /* Hide Desktop Center & Right */
+  .nav-center, .nav-right {
+    display: none;
+  }
+
+  /* Show Hamburger */
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  /* Wrapper padding fix for mobile */
+  .nav-wrapper {
+    padding: 0; 
+  }
 }
 
 /* --- HERO SLIDER --- */
@@ -134,58 +214,421 @@
 .cat-orange { background: #ffedd5; color: #ea580c; }
 .cat-emerald { background: #d1fae5; color: #059669; }
 
-/* --- MAIN LAYOUT --- */
+/* --- CSS Variables (Agar global nahi hain to yahan define kar lo) --- */
+:root {
+  --border-color: #e0e0e0;
+}
+
+/* --- MAIN PAGE LAYOUT --- */
 .main-layout {
-  max-width: 1400px; margin: 20px auto; padding: 0 20px;
-  display: flex; gap: 30px; position: relative;
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 0 20px;
+  display: flex; /* Sidebar Left, Content Right */
+  gap: 30px; 
+  position: relative;
+  align-items: flex-start; /* Important: Taaki sidebar stretch na ho */
 }
 
-/* Sidebar */
-.filter-sidebar {
-  width: 280px; background: white; padding: 20px; border-radius: 12px;
-  border: 1px solid var(--border-color); height: fit-content;
-  position: sticky; top: 90px;
+/* Product Area ko bachi hui jagah lene do */
+.product-content-area {
+  flex: 1;
+  min-width: 0; /* Flexbox overflow fix */
 }
 
-.sidebar-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
-.close-btn { display: none; background: none; border: none; font-size: 20px; }
-
-.filter-group { margin-bottom: 25px; }
-.filter-group label { display: block; font-weight: 600; margin-bottom: 10px; font-size: 14px; }
-.filter-group input[type="range"] { width: 100%; accent-color: var(--primary-green); }
-.price-labels { display: flex; justify-content: space-between; font-size: 12px; margin-top: 5px; }
-.price-highlight { color: var(--primary-green); font-weight: bold; }
-
-.checkbox-list label { display: block; margin-bottom: 8px; font-size: 14px; cursor: pointer; }
-.filter-group select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
-
-.apply-btn {
-  width: 100%; background: var(--primary-green); color: white;
-  padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;
-}
-
-.product-content-area { flex: 1; }
-
-.mobile-filter-bar { display: none; margin-bottom: 15px; }
-.filter-toggle-btn {
-  display: flex; align-items: center; gap: 8px; padding: 8px 16px;
-  background: white; border: 1px solid var(--border-color); border-radius: 6px;
-}
-
-/* --- RESPONSIVE --- */
+/* --- RESPONSIVE LAYOUT (Page Level) --- */
 @media (max-width: 900px) {
-  .nav-center, .location-box { display: none; }
-  .mobile-menu-btn { display: block; }
-  .rail-wrapper h3 { display: none; }
+  /* Mobile pe column kar do (Sidebar chup jayega, content dikhega) */
+  .main-layout {
+    flex-direction: column;
+  }
   
-  .main-layout { flex-direction: column; }
+  /* Nav items hide karne ka logic (Jo tumne diya tha) */
+  .nav-center, .location-box { 
+    display: none; 
+  }
+  
+  .mobile-menu-btn { 
+    display: block; 
+  }
+  
+  .rail-wrapper h3 { 
+    display: none; 
+  }
+}
+
+/* --- SIDEBAR CONTAINER --- */
+.filter-sidebar {
+  width: 280px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  position: sticky;
+  top: 90px; 
+  height: fit-content;
+  z-index: 90;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #2c3e50;
+}
+
+.close-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+}
+
+/* --- FILTER GROUPS --- */
+.filter-group {
+  margin-bottom: 25px;
+}
+
+.label-with-icon {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.icon-muted { color: #999; }
+
+.filter-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: #34495e;
+  margin-bottom: 10px;
+}
+
+/* --- DISTANCE SLIDER STYLING --- */
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--primary-green); /* Green Slider */
+  cursor: pointer;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 10px;
+  color: #888;
+}
+
+.highlight-text {
+  color: var(--primary-green);
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* Select Box */
+.styled-select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  background: white;
+  cursor: pointer;
+}
+.styled-select:focus { border-color: var(--primary-green); }
+
+/* Checkboxes */
+.checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+
+.checkbox-item input {
+  accent-color: var(--primary-green);
+  width: 16px;
+  height: 16px;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background-color: #f0f0f0;
+  margin: 15px 0;
+}
+
+/* Apply Button */
+.apply-btn {
+  width: 100%;
+  background: var(--primary-green);
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.apply-btn:hover { background: #219150; }
+
+/* --- MOBILE RESPONSIVE --- */
+.mobile-filter-bar {
+  display: none;
+  margin-bottom: 15px;
+}
+
+.filter-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
   .mobile-filter-bar { display: block; }
+  .close-btn { display: block; }
 
   .filter-sidebar {
-    position: fixed; top: 0; left: 0; height: 100vh; z-index: 200;
-    transform: translateX(-100%); transition: transform 0.3s;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    width: 280px;
+    z-index: 1000;
+    border-radius: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
   }
+
   .filter-sidebar.open { transform: translateX(0); }
-  .close-btn { display: block; }
+  
+  .sidebar-overlay {
+    display: block;
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+  }
 }
+
+
+/* Listed Product css */
+/* --- Variables --- */
+:root {
+  --primary-green: #27ae60;
+  --text-dark: #2c3e50;
+  --bg-card: #ffffff;
+  --border-color: #e0e0e0;
+}
+
+.grid-wrapper {
+  width: 100%;
+}
+
+.section-header {
+  margin-bottom: 20px;
+  /* Sort options hatne ke baad simple margin */
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+/* --- GRID LAYOUT --- */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+/* --- CARD STYLING --- */
+.product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+  border-color: var(--primary-green);
+}
+
+/* --- IMAGE BOX --- */
+.card-img-box {
+  position: relative;
+  height: 180px;
+  background: #f0f0f0;
+}
+
+.product-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.grade-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: bold;
+  color: white;
+  z-index: 2;
+}
+.grade-a { background: var(--primary-green); }
+.grade-b { background: #f39c12; }
+
+.bulk-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #2c3e50;
+  color: white;
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+/* --- CONTENT BOX --- */
+.card-content {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 8px;
+}
+.card-meta span { display: flex; align-items: center; gap: 4px; }
+
+.product-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  color: var(--text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.farmer-name {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 15px 0;
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* --- FOOTER --- */
+.card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed #eee;
+  padding-top: 12px;
+}
+
+/* --- PRICE FIX (Ye Wala Part Change Kiya Hai) --- */
+.price-box {
+  display: flex;
+  align-items: baseline; /* Text ko neeche se align karta hai */
+  gap: 2px; /* Thoda sa gap taaki chipke nahi */
+  color: var(--primary-green);
+}
+
+.currency { 
+  font-size: 16px; 
+  font-weight: 700; 
+}
+
+.amount { 
+  font-size: 20px; 
+  font-weight: 800; 
+  line-height: 1;
+}
+
+.unit { 
+  font-size: 13px; 
+  color: #888; 
+  font-weight: 500;
+}
+
+/* --- BUTTON --- */
+.add-btn {
+  background: var(--text-dark);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background: var(--primary-green);
+}
+
+/* --- LOADING SKELETON --- */
+.skeleton-card {
+  height: 300px;
+  background: #eee;
+  border-radius: 12px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
