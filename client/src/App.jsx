@@ -17,6 +17,7 @@ import AddListing from "./pages/farmer/AddListing";
 import MyListing from "./pages/farmer/MyListing";
 import Transaction from "./pages/farmer/Transaction";
 import Orders from "./pages/farmer/Orders";
+import BuyerDashboard from "./pages/buyer/BuyerDashboard";
 
 function App() {
   return (
@@ -54,8 +55,11 @@ function App() {
             
             {/* URL: /dashboard/orders */}
             <Route path="orders" element={<Orders />} />
+
+
             
           </Route>
+            <Route path="product" element={<BuyerDashboard />} />
 
         </Routes>
       </div>
