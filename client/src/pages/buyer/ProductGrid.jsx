@@ -1,92 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Star, Clock, MapPin } from 'lucide-react';
+import axios from 'axios';
+import { Star, Clock, MapPin, Package } from 'lucide-react'; // ShoppingCart hata diya
 
 const ProductGrid = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // --- Mock Data ---
-  const MOCK_DATA = [
-    {
-      id: 1,
-      name: 'Sharbati Wheat (M.P. Special)',
-      type: 'bulk',
-      price: 2600,
-      unit: 'Quintal',
-      grade: 'A+',
-      farmer: 'Ram Charan',
-      location: 'Sehore Mandi',
-      image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=800&q=80',
-      harvestDate: '2 Days ago'
-    },
-    {
-      id: 2,
-      name: 'Hybrid Tomato',
-      type: 'fresh',
-      price: 1200,
-      unit: 'Quintal',
-      grade: 'A',
-      farmer: 'Suresh Patil',
-      location: 'Nashik',
-      image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=500&q=80',
-      harvestDate: 'Today'
-    },
-    // ... baaki data same rahega ...
-    {
-      id: 3,
-      name: 'Basmati Rice (1121)',
-      type: 'bulk',
-      price: 4500,
-      unit: 'Quintal',
-      grade: 'Export',
-      farmer: 'Punjab Agro',
-      location: 'Amritsar',
-      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80',
-      harvestDate: 'Last Week'
-    },
-    {
-      id: 4,
-      name: 'Desi Potato (Indore)',
-      type: 'fresh',
-      price: 800,
-      unit: 'Quintal',
-      grade: 'B',
-      farmer: 'Kisan Group',
-      location: 'Indore',
-      image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=500&q=80',
-      harvestDate: 'Yesterday'
-    },
-    {
-      id: 5,
-      name: 'Organic Turmeric',
-      type: 'fresh',
-      price: 120,
-      unit: 'Kg',
-      grade: 'A',
-      farmer: 'Vedic Farms',
-      location: 'Sangli',
-      image: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=500&q=80',
-      harvestDate: '1 Month ago'
-    },
-    {
-      id: 6,
-      name: 'Mustard Seeds',
-      type: 'bulk',
-      price: 5400,
-      unit: 'Quintal',
-      grade: 'A',
-      farmer: 'Rajasthan Coop',
-      location: 'Jaipur',
-      image: 'https://images.unsplash.com/photo-1558583055-d7ac00b1adca?auto=format&fit=crop&w=800&q=80',
-      harvestDate: '10 Days ago'
-    }
-  ];
+  // --- Helper: Date Formatting ---
+  const formatHarvestDate = (dateString) => {
+    if (!dateString) return "Recently";
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now - date);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Yesterday";
+    return `${diffDays} Days ago`;
+  };
 
+  // --- Real Data Fetching ---
   useEffect(() => {
-    setTimeout(() => {
-      setProducts(MOCK_DATA);
-      setLoading(false);
-    }, 1500);
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get('http://localhost:3000/api/all');
+
+        if (res.data.success && Array.isArray(res.data.data)) {
+          const realData = res.data.data.map((item) => ({
+            id: item._id,
+            name: item.name,
+            type: item.quantityAvailable > 100 ? 'bulk' : 'fresh',
+            price: item.pricePerUnit,
+            
+            unit: item.quantity, 
+            totalStock: item.quantityAvailable, // Stock Quantity
+            
+            grade: item.grade || 'N/A',
+            farmer: (item.seller && item.seller.name) ? item.seller.name : "Verified Farmer",
+            location: "Nagpur Mandi",
+            image: (item.images && item.images.length > 0) 
+              ? item.images[0].url 
+              : "https://via.placeholder.com/500?text=Agri+Crop",
+            harvestDate: formatHarvestDate(item.harvestDate)
+          }));
+          setProducts(realData);
+        }
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   if (loading) {
@@ -99,46 +65,54 @@ const ProductGrid = () => {
 
   return (
     <div className="grid-wrapper">
-      {/* Update 1: Sort Options hata diye */}
-      
-
       <div className="grid-container">
-        {products.map((item) => (
-          <div key={item.id} className="product-card">
-            
-            <div className="card-img-box">
-              <img src={item.image} alt={item.name} />
-              <span className={`grade-tag ${item.grade.includes('A') ? 'grade-a' : 'grade-b'}`}>
-                Grade {item.grade}
-              </span>
-              {item.type === 'bulk' && <span className="bulk-badge">📦 Wholesale</span>}
-            </div>
-
-            <div className="card-content">
-              <div className="card-meta">
-                <span className="harvest-time"><Clock size={12} /> {item.harvestDate}</span>
-                <span className="location"><MapPin size={12} /> {item.location}</span>
+        {products.length > 0 ? (
+          products.map((item) => (
+            <div key={item.id} className="product-card">
+              
+              <div className="card-img-box">
+                <img src={item.image} alt={item.name} />
+                <span className={`grade-tag ${item.grade?.includes('A') ? 'grade-a' : 'grade-b'}`}>
+                  Grade {item.grade}
+                </span>
+                {item.type === 'bulk' && <span className="bulk-badge">📦 Wholesale</span>}
               </div>
 
-              <h3 className="product-name">{item.name}</h3>
-              <p className="farmer-name">By: {item.farmer} <Star size={12} fill="#f59e0b" stroke="none"/></p>
-
-              <div className="card-footer">
-                {/* Update 2: Price Structure Simplified */}
-                <div className="price-box">
-                  <span className="currency">₹</span>
-                  <span className="amount">{item.price}</span>
-                  <span className="unit">/{item.unit}</span>
+              <div className="card-content">
+                <div className="card-meta">
+                  <span className="harvest-time"><Clock size={12} /> {item.harvestDate}</span>
+                  <span className="location"><MapPin size={12} /> {item.location}</span>
                 </div>
-                
-                <button className="add-btn" onClick={() => alert(`Added ${item.name} to cart!`)}>
-                  <ShoppingCart size={18} />
-                  {item.type === 'bulk' ? 'Quote' : 'Add'}
-                </button>
+
+                <h3 className="product-name">{item.name}</h3>
+                <p className="farmer-name">By: {item.farmer} <Star size={12} fill="#f59e0b" stroke="none"/></p>
+
+                {/* Footer Change: Button hata diya, Stock Right side me laga diya */}
+                <div className="card-footer">
+                  
+                  {/* Left Side: Price */}
+                  <div className="price-box">
+                    <span className="currency">₹</span>
+                    <span className="amount">{item.price}</span>
+                    <span className="unit">/{item.unit}</span>
+                  </div>
+                  
+                  {/* Right Side: Stock Info */}
+                  <div className="stock-badge">
+                    <Package size={14} />
+                    <span>{item.totalStock} {item.unit} Left</span>
+                  </div>
+
+                </div>
               </div>
             </div>
+          ))
+        ) : (
+          <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '40px'}}>
+            <h3>Abhi koi fasal available nahi hai 🌱</h3>
+            <p>Kisan bhaiyon ke upload karne ka intezaar karein.</p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

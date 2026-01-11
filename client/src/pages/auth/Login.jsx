@@ -41,7 +41,7 @@ const Login = () => {
         if (data.data.role === "farmer") {
           navigate("/dashboard");
         } else {
-          navigate("/dashboard/buyer");
+          navigate("/product");
         }
       } else {
         setError(data.message || "Invalid credentials");

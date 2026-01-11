@@ -123,8 +123,11 @@ exports.deleteListing = async (req, res) => {
 // 4. Get All Listings (Home Page ke liye)
 exports.getAllListings = async (req, res) => {
     try {
-        // Filters (Future me yahan category/search logic aayega)
-        const listings = await Listing.find({ isActive: true }).sort({ createdAt: -1 });
+        // .populate() use karke humne seller ka data join kiya
+        // 'name' ka matlab hai humein user object me se sirf uska naam chahiye, password ya email nahi
+        const listings = await Listing.find({ isActive: true })
+            .sort({ createdAt: -1 })
+            .populate('seller', 'name'); 
         
         res.status(200).json({
             success: true,
