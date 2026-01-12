@@ -15,7 +15,7 @@ const Products = () => {
       try {
         // Backend API to get single listing by ID
         // Note: Apne backend route ke hisab se URL change karna
-        const res = await axios.get(`http://localhost:3000/api/listings/${id}`); 
+        const res = await axios.get(`https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/api/listings/${id}`); 
         
         if (res.data) {
           setProduct(res.data); // Backend se jo object aaya wo set kiya

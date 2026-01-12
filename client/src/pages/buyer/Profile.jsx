@@ -35,54 +35,59 @@ const Profile = () => {
     confirmPassword: "",
   });
 
-  // --- Real Data Fetching ---
-  // --- Real Data Fetching ---
-  useEffect(() => {
+useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        // 1. Data retrieve karo
-        const storedUserString = localStorage.getItem("user");
-        console.log("LocalStorage Raw Data:", storedUserString); // Check Console
+        // 1. Sirf Token check karo (ID ki zarurat nahi hai ab)
+        const token = localStorage.getItem("token");
 
-        const storedUser = JSON.parse(storedUserString);
-        console.log("Parsed User Object:", storedUser); // Check Console
-
-        // 2. ID nikaalne ki koshish (Safety Check ke sath)
-        // Kabhi kabhi data direct object hota hai, kabhi 'data' key ke andar hota hai
-        const userId =
-          storedUser?._id || storedUser?.data?._id || storedUser?.user?._id;
-
-        if (!userId) {
-          console.warn("User ID not found! Redirecting to Login...");
-          // Agar ID nahi mili to localStorage clear krdo taaki fresh login ho sake
-          localStorage.removeItem("user");
-          navigate("/login");
-          return;
+        if (!token) {
+           console.warn("No token found, redirecting to login.");
+           navigate("/login");
+           return;
         }
 
-        // 3. API Call
-        const res = await axios.get(
-          `http://localhost:3000/api/users/${userId}`
-        );
+        // 2. API Call (/auth/profile wala)
+        const res = await axios.get(`https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/auth/profile`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        console.log("API Response:", res.data); // Console me check karna data kaisa dikh raha hai
 
         if (res.data) {
-          // Backend se jo data aaya use set karo (Backend structure ke hisaab se)
-          // Usually backend sends { success: true, data: { ... } } or just { ... }
-          const user = res.data.data || res.data;
+          // Backend se data nikalo (Structure: { success: true, data: user })
+          const user = res.data.data || res.data; 
 
+          // 3. SAFE DATA SETTING (Yahan code fat raha tha)
           setFormData({
             name: user.name || "",
             email: user.email || "",
             phone: user.phone || "",
-            // Address check safe tarike se
-            address: user.location?.address || "",
-            // Agar tumhare model me city/pincode alag nahi hai to address string hi dikhao
-            city: "",
-            pincode: "",
+            
+            // Address handle karna sabse risky hota hai
+            // Hum check karenge: Kya address exist karta hai?
+            address: user.address 
+                ? (typeof user.address === 'string' ? user.address : user.address?.street || "") 
+                : "",
+            
+            city: user.city || user.address?.city || "",
+            pincode: user.pincode || user.address?.pincode || "",
           });
         }
+
       } catch (err) {
-        console.error("Error fetching profile:", err);
+        console.error("Profile Error:", err);
+        
+        // 🔥 FIX: Har error pe redirect MAT karo.
+        // Sirf tab redirect karo jab backend bole "Token Galat Hai" (401)
+        if (err.response && err.response.status === 401) {
+            alert("Session expired. Please login again.");
+            localStorage.clear();
+            navigate("/login");
+        }
+        // Agar koi aur error hai (jaise code fatna), to console me error dikhega par page redirect nahi hoga.
       } finally {
         setLoading(false);
       }
@@ -117,7 +122,7 @@ const Profile = () => {
         ],
       };
 
-      await axios.put(`http://localhost:3000/api/users/${userId}`, updatedData);
+      await axios.put(`https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/api/users/${userId}`, updatedData);
 
       setIsEditing(false);
       alert("Profile Updated Successfully!");

@@ -9,8 +9,8 @@ const cors = require("cors");
 
 
 app.use(cors({
-  origin: "http://localhost:5173", // Tumhare Frontend ka URL (Vite default)
-  credentials: true // Cookies/Session allow karne ke liye
+  origin: "http://localhost:5173",
+  credentials: true 
 }));
 
 

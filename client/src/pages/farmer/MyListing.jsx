@@ -18,7 +18,7 @@ const MyListing = () => {
   const fetchListings = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:3000/api/my-listings", {
+      const response = await axios.get("https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/api/my-listings", {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -40,7 +40,7 @@ const MyListing = () => {
     if (window.confirm("Are you sure you want to delete this crop?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:3000/api/${id}`, {
+        await axios.delete(`https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/api/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -68,7 +68,7 @@ const MyListing = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:3000/api/${editItem.id}`, 
+      await axios.put(`https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/api/${editItem.id}`, 
         { 
           pricePerUnit: editItem.pricePerUnit, 
           quantityAvailable: editItem.quantityAvailable 

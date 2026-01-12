@@ -1,10 +1,8 @@
 const mongoose = require("mongoose");
-// const User = require("../models/User.js");
-// const Listing = require("../models/Listing.js");
 
 const connectDB = async()=>{
     try{
-        await mongoose.connect("mongodb://127.0.0.1:27017/agribridge");
+        await mongoose.connect(process.env.MONGO_URI);
         console.log("DB connected successfully");
     }
     catch(err){

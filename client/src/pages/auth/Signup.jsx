@@ -85,7 +85,7 @@ const Signup = () => {
     console.log("Sending Clean Payload:", payload);
 
     try {
-      const response = await fetch("http://localhost:3000/auth/signup", {
+      const response = await fetch("https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
