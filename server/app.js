@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require("express");
 const app = express();
 const mongoDB = require("./config/db.js");
-const port = 3000
 
 const userRoute = require("./routes/userRoutes.js");
 const productRoute = require("./routes/productRoutes.js");
@@ -19,9 +18,14 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.listen(port, ()=>{
-    console.log("Server is working")
-});
+const PORT = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
 
 app.get("/", (req, res)=>{
     res.send(`Server is running on port ${port}`);
@@ -30,3 +34,5 @@ app.get("/", (req, res)=>{
 app.use("/auth", userRoute);
 app.use("/api", productRoute);
 mongoDB();
+
+module.exports = app;

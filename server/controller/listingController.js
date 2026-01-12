@@ -64,7 +64,6 @@ exports.updateListing = async (req, res) => {
             return res.status(404).json({ success: false, message: "Listing not found" });
         }
 
-        // Check Ownership (Sirf wahi update kare jisne banaya hai)
         if (listing.seller.toString() !== req.user._id.toString()) {
             return res.status(403).json({ success: false, message: "Not authorized to update this listing" });
         }
@@ -72,9 +71,6 @@ exports.updateListing = async (req, res) => {
         // Update logic
         let updateData = { ...req.body };
 
-        // Agar nayi images upload hui hain, toh unhe add karo (Optional logic)
-        // Filhal hum text update pe focus kar rahe hain.
-        // Agar images replace karni hain toh alag logic lagega.
 
         listing = await Listing.findByIdAndUpdate(req.params.id, updateData, {
             new: true, // Return updated object

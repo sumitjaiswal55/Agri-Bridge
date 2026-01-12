@@ -117,3 +117,30 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
+exports.getProfile = async (req, res) => {
+  try {
+    console.log("User from Request:", req.user); 
+
+    if (!req.user) {
+        return res.status(401).json({ success: false, message: "User not authenticated inside controller" });
+    }
+
+    // 2. ID Nikalo (Safe Tarike se)
+    // Ye line wahi hai jahan error aa raha tha (reading 'id')
+    const userId = req.user.id || req.user._id; 
+
+    // 3. Database se user dhundo
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found in DB" });
+    }
+
+    res.json({ success: true, data: user });
+  } catch (error) {
+    console.error("Get Profile Error:", error); // Pura error print karo
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
