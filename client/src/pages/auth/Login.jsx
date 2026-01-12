@@ -1,53 +1,63 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Auth.css"
-
+import "./Auth.css";
 
 const Login = () => {
   const navigate = useNavigate();
 
+  // Form State
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  // UI States
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Handle Input Change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError("");
+    setError(""); // Typing shuru karte hi error hata do
   };
 
+  // Handle Login Submit
+  // Handle Login Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      // API Call
-      const response = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
       if (data.success) {
+        // User data save karo
+        localStorage.setItem("user", JSON.stringify(data.data));
         localStorage.setItem("token", data.data.token);
-        localStorage.setItem("userInfo", JSON.stringify(data.data));
 
-        if (data.data.role === "farmer") {
-          navigate("/dashboard");
-        } else {
+        alert("Login Successful! Redirecting...");
+
+        const userRole = data.data.role; 
+
+        if (userRole === "buyer") {
           navigate("/product");
+        } else if (userRole === "farmer") {
+          navigate("/dashboard"); // Ya jo bhi seller ka route hai
+        } else {
+          navigate("/profile"); // Fallback agar role match na ho
         }
       } else {
-        setError(data.message || "Invalid credentials");
+        setError(data.message || "Login Failed");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Login Request Error:", err);
       setError("Server Error. Please try again later.");
     } finally {
       setLoading(false);
@@ -57,21 +67,36 @@ const Login = () => {
   return (
     <div className="auth-wrapper">
       <div className="auth-container">
-      
+        {/* Left Side: Welcome Graphic */}
         <div className="auth-left">
           <div className="auth-overlay">
             <h1>Welcome Back!</h1>
-            <p>Login to manage your crops, orders, and connect with the market.</p>
+            <p>
+              Login to manage your crops, orders, and connect with the market.
+            </p>
           </div>
         </div>
 
+        {/* Right Side: Login Form */}
         <div className="auth-right">
           <div className="auth-header">
             <h2>Sign In</h2>
             <p>Access your AgriBridge account</p>
           </div>
 
-          {error && <div className="error-message">{error}</div>}
+          {/* Error Message Display */}
+          {error && (
+            <div
+              className="error-message"
+              style={{
+                color: "red",
+                marginBottom: "10px",
+                textAlign: "center",
+              }}
+            >
+              {error}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">

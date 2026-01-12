@@ -5,7 +5,8 @@ const {
     updateListing, 
     deleteListing, 
     getAllListings, 
-    getMyListings 
+    getMyListings, 
+    getListingById
 } = require("../controller/listingController.js");
 const protect = require("../middleware/authMiddleware.js");
 
@@ -18,6 +19,7 @@ const upload = multer({ storage });
 
 // Public Route (Home Page)
 router.get("/all", getAllListings);
+router.get('/listings/:id', getListingById);
 
 // Protected Routes
 router.post("/create", protect, upload.array("images", 5), createListing);

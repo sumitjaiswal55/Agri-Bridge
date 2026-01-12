@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Auth.css"
+import "./Auth.css";
 
 const Signup = () => {
   const navigate = useNavigate();
-  
+
   // Form State
   const [formData, setFormData] = useState({
     name: "",
@@ -13,10 +13,10 @@ const Signup = () => {
     phone: "",
     role: "buyer", // Default
     address: "",
-    latitude: "",
-    longitude: "",
+    latitude: 0, // Default 0 to match Schema default
+    longitude: 0, // Default 0
     farmSize: "",
-    businessName: ""
+    businessName: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -41,10 +41,11 @@ const Signup = () => {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
-        setLocationStatus("Location Fetched! ✅");
+        setLocationStatus("Location Fetched!");
       },
-      () => {
-        setLocationStatus("Unable to retrieve your location.");
+      (error) => {
+        console.error(error);
+        setLocationStatus("Unable to retrieve location. Please type address.");
       }
     );
   };
@@ -54,30 +55,36 @@ const Signup = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Backend ke liye payload structure
+
     const payload = {
       name: formData.name,
       email: formData.email,
       password: formData.password,
-      phone: formData.phone,
+      phone: formData.phone.toString(), // Schema expects String
       role: formData.role,
       location: {
         type: "Point",
         coordinates: [
-          parseFloat(formData.longitude) || 0, 
-          parseFloat(formData.latitude) || 0
+            parseFloat(formData.longitude) || 0, 
+            parseFloat(formData.latitude) || 0
         ],
-        address: formData.address,
+        address: formData.address, // "Village/Area Name" maps here
       },
-      // Conditional Fields
-      ...(formData.role === "farmer" && { farmDetails: { size: formData.farmSize } }),
-      ...(formData.role === "buyer" && { businessName: formData.businessName }),
     };
 
-    console.log("Sending Data:", payload);
+    // 2. Add Role Specific Data (Strictly)
+    if (formData.role === "farmer") {
+      payload.farmDetails = {
+        size: parseFloat(formData.farmSize) || 0,
+        crops: [], // Default empty array
+      };
+    } else if (formData.role === "buyer") {
+      payload.businessName = formData.businessName;
+    }
+
+    console.log("Sending Clean Payload:", payload);
 
     try {
-      // API call (Example)
       const response = await fetch("http://localhost:3000/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -86,15 +93,16 @@ const Signup = () => {
 
       const data = await response.json();
 
-      if (data.success) {
-        alert("Registration Successful!");
+      if (response.ok) {
+        alert("Registration Successful! Please Login.");
         navigate("/login");
       } else {
+        // Backend validation errors show here
         alert(data.message || "Registration Failed");
       }
     } catch (error) {
-      console.error(error);
-      alert("Server Error");
+      console.error("Signup Error:", error);
+      alert("Server Error. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -103,48 +111,88 @@ const Signup = () => {
   return (
     <div className="auth-wrapper">
       <div className="auth-container">
-        {/* Left Side: Image/Welcome */}
+        {/* Left Side */}
         <div className="auth-left">
           <div className="auth-overlay">
-            <h1>Join the Revolution</h1>
-            <p>Connect directly with markets. No Middlemen.</p>
+            <h1>Join AgriBridge</h1>
+            <p>Direct Farm-to-Table Connection.</p>
           </div>
         </div>
 
-        {/* Right Side: Form */}
+        {/* Right Side */}
         <div className="auth-right">
           <div className="auth-header">
             <h2>Create Account</h2>
-            <p>Welcome to AgriBridge! Please enter your details.</p>
+            <p>Fill details to get started</p>
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-row">
               <div className="form-group">
                 <label>Full Name</label>
-                <input type="text" name="name" placeholder="Ram Lal" required onChange={handleChange} />
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Ram Lal"
+                  required
+                  onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label>Phone (10 digits)</label>
-                <input type="number" name="phone" placeholder="9876543210" required minLength="10" maxLength="10" onChange={handleChange} />
+                {/* Changed type to text to strictly enforce maxLength */}
+                <input
+                  type="text" 
+                  name="phone"
+                  placeholder="9876543210"
+                  required
+                  maxLength="10"
+                  pattern="\d{10}"
+                  title="Please enter exactly 10 digits"
+                  onChange={(e) => {
+                    // Only allow numbers
+                    const re = /^[0-9\b]+$/;
+                    if (e.target.value === '' || re.test(e.target.value)) {
+                       handleChange(e)
+                    }
+                  }}
+                  value={formData.phone}
+                />
               </div>
             </div>
 
             <div className="form-group">
               <label>Email Address</label>
-              <input type="email" name="email" placeholder="example@gmail.com" required onChange={handleChange} />
+              <input
+                type="email"
+                name="email"
+                placeholder="example@gmail.com"
+                required
+                onChange={handleChange}
+              />
             </div>
 
             <div className="form-group">
               <label>Password</label>
-              <input type="password" name="password" placeholder="••••••••" required onChange={handleChange} />
+              <input
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                required
+                onChange={handleChange}
+              />
             </div>
 
             <div className="form-group">
               <label>I am a</label>
-              <select name="role" onChange={handleChange} value={formData.role} className="form-select">
-                <option value="farmer">Farmer (Kisan)</option>
+              <select
+                name="role"
+                onChange={handleChange}
+                value={formData.role}
+                className="form-select"
+              >
                 <option value="buyer">Buyer (Hotel/Merchant)</option>
+                <option value="farmer">Farmer (Kisan)</option>
               </select>
             </div>
 
@@ -152,13 +200,26 @@ const Signup = () => {
             {formData.role === "farmer" && (
               <div className="form-group">
                 <label>Farm Size (Acres)</label>
-                <input type="number" name="farmSize" placeholder="e.g. 5" onChange={handleChange} />
+                <input
+                  type="number"
+                  name="farmSize"
+                  placeholder="e.g. 5"
+                  required
+                  onChange={handleChange}
+                />
               </div>
             )}
+            
             {formData.role === "buyer" && (
               <div className="form-group">
                 <label>Business/Hotel Name</label>
-                <input type="text" name="businessName" placeholder="e.g. Taj Hotel" onChange={handleChange} />
+                <input
+                  type="text"
+                  name="businessName"
+                  placeholder="e.g. Taj Hotel"
+                  required
+                  onChange={handleChange}
+                />
               </div>
             )}
 
@@ -166,15 +227,31 @@ const Signup = () => {
             <div className="form-group">
               <label>Location & Address</label>
               <div className="location-box">
-                <input type="text" name="address" placeholder="Village/Area Name" required onChange={handleChange} />
-                <button type="button" className="btn-location" onClick={handleLocation}>
-                  📍 Detect GPS
+                <input
+                  type="text"
+                  name="address"
+                  placeholder="Village / Area Name"
+                  required
+                  onChange={handleChange}
+                />
+                <button
+                  type="button"
+                  className={`btn-location ${formData.latitude ? 'active' : ''}`}
+                  onClick={handleLocation}
+                >
+                  {formData.latitude ? "✅ Saved" : "📍 Detect GPS"}
                 </button>
               </div>
-              {locationStatus && <small className="status-text">{locationStatus}</small>}
+              {locationStatus && (
+                <small className="status-text">{locationStatus}</small>
+              )}
             </div>
 
-            <button type="submit" className="btn btn-filled btn-block" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-filled btn-block"
+              disabled={loading}
+            >
               {loading ? "Creating Account..." : "Sign Up"}
             </button>
           </form>

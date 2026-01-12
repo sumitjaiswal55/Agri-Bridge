@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, } from 'react';
 import { Search, MapPin, ShoppingCart, User, Menu, X } from 'lucide-react';
+import Profile from './Profile';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <div>
       <nav className="navbar">
@@ -34,12 +37,13 @@ export default function Navbar() {
                 <span>Nagpur Mandi</span>
               </div>
             </div>
-            <button className="icon-btn cart-btn">
+            <button className="icon-btn cart-btn" onClick={() => navigate('/cart')}>
               <ShoppingCart size={22} />
               <span className="badge">3</span>
             </button>
-            <button className="icon-btn">
+            <button className="icon-btn" onClick={() => navigate('/profile')}>
               <User size={22} />
+              
             </button>
           </div>
 

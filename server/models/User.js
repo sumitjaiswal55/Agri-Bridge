@@ -1,61 +1,77 @@
 const mongoose = require("mongoose");
+
 const UserSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            required: [true, "Name is required"],
             trim: true
         },
         email: {
             type: String,
-            required: true,
+            required: [true, "Email is required"],
             unique: true,
-            lowercase: true
+            lowercase: true,
+            trim: true
         },
         password: {
             type: String,
-            required: true,
-
+            required: [true, "Password is required"],
         },
         phone: {
-            type: Number,
-            required: true,
-            maxLength: 10,
-            minLength: 10
+            type: String, // Changed to String for correct length validation
+            required: [true, "Phone number is required"],
+            match: [/^\d{10}$/, "Please enter a valid 10-digit phone number"]
         },
         role: {
             type: String,
             enum: ["farmer", "buyer", "seller"],
-            default: "buyer"
+            default: "buyer",
+            required: true
         },
+        
+        // --- Location Schema (GeoJSON) ---
         location: {
             type: {
                 type: String,
                 enum: ["Point"],
-                default: "Point",
+                default: "Point"
             },
             coordinates: {
-                type: [Number], 
-                required: true,
+                type: [Number], // Format: [Longitude, Latitude]
+                index: "2dsphere", 
+                default: [0, 0] // Default value if GPS fails
             },
             address: {
-                type: String, 
-            },
+                type: String, // Ye form ke "Village/Area Name" se map hoga
+                default: "" 
+            }
         },
-        farmDetails: {
-            size: Number, 
-            crops: [String],
-        },
-        // Buyer specific details
+
+        // --- Role Based Fields ---
+        
+        // Only valid if role is "buyer"
         businessName: {
-            type: String, // e.g., "Taj Hotel"
+            type: String,
+            required: function() { return this.role === "buyer"; }, // Only required for buyers
+            trim: true
         },
+
+        // Only valid if role is "farmer"
+        farmDetails: {
+            size: {
+                type: Number,
+                required: function() { return this.role === "farmer"; }
+            },
+            crops: {
+                type: [String],
+                default: []
+            }
+        }
     },
     {
         timestamps: true
     }
 );
 
-UserSchema.index({location: "2dsphere"});
-
-module.exports = mongoose.model("User" , UserSchema);
+module.exports = mongoose.model("User", UserSchema);

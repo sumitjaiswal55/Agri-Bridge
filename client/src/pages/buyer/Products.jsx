@@ -1,42 +1,121 @@
-import React from 'react';
-// import './ProductCard.css'; // CSS wahi purani wali
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { ArrowLeft, MapPin, Calendar, User, Package, ShieldCheck } from 'lucide-react';
+import "./buyer.css"
 
-const Product = ({ product }) => {
-  
-  // 1. Image Handling (JSON me images array hai)
-  // Agar image hai to pehli wali lo, nahi to placeholder
-  const imageUrl = (product.images && product.images.length > 0) 
-    ? product.images[0].url 
-    : "https://via.placeholder.com/300?text=No+Image";
+const Products = () => {
+  const { id } = useParams(); // URL se ID nikali
+  const navigate = useNavigate();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  return (
-    <div className="agri-card">
-      <div className="card-image-container">
-        <img src={imageUrl} alt={product.name} className="product-img" />
-        {/* Grade Badge */}
-        {product.grade && <span className="badge">Grade: {product.grade}</span>}
-      </div>
-
-      <div className="card-details">
-        <h3 className="product-title">{product.name}</h3>
-        {/* Description ko thoda trim krte hain agar lamba ho */}
-        <p className="farmer-location" style={{fontSize: '12px', color: '#666'}}>
-           {product.description.substring(0, 50)}...
-        </p>
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        // Backend API to get single listing by ID
+        // Note: Apne backend route ke hisab se URL change karna
+        const res = await axios.get(`http://localhost:3000/api/listings/${id}`); 
         
-        <div className="price-row">
-          {/* JSON field names match kiye hain */}
-          <span className="price">₹{product.pricePerUnit}/{product.quantity}</span>
-          
-          <span className="stock-info text-green">
-            Min Order: {product.minOrderQuantity} {product.quantity}
-          </span>
+        if (res.data) {
+          setProduct(res.data); // Backend se jo object aaya wo set kiya
+        }
+      } catch (err) {
+        console.error("Error fetching product details:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProductDetails();
+  }, [id]);
+
+  if (loading) return <div className="loading-screen">Loading Details...</div>;
+  if (!product) return <div className="error-screen">Product Not Found!</div>;
+
+  // Safe checks for data
+  const imageUrl = (product.images && product.images.length > 0) ? product.images[0].url : "https://via.placeholder.com/600";
+  const farmerName = product.seller?.name || "Verified Farmer";
+  
+  return (
+    <div className="details-container">
+      
+      {/* Back Button */}
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        <ArrowLeft size={20} /> Back to Market
+      </button>
+
+      <div className="details-wrapper">
+        
+        {/* Left Side: Image */}
+        <div className="image-section">
+          <img src={imageUrl} alt={product.name} className="main-image" />
         </div>
 
-        <button className="add-btn">Add to Cart 🛒</button>
+        {/* Right Side: Info */}
+        <div className="info-section">
+          <div className="header-row">
+            <h1>{product.name}</h1>
+            <span className={`grade-badge ${product.grade === 'A' ? 'grade-a' : 'grade-b'}`}>
+              Grade {product.grade || 'A'}
+            </span>
+          </div>
+
+          <div className="price-block">
+            <span className="currency">₹</span>
+            <span className="price">{product.pricePerUnit}</span>
+            <span className="per-unit">/{product.quantity}</span> 
+          </div>
+
+          <div className="stock-status">
+            <Package className="icon-green" />
+            <span>Stock Available: <strong>{product.quantityAvailable} {product.quantity}</strong></span>
+          </div>
+
+          <div className="meta-grid">
+            <div className="meta-item">
+              <User size={18} className="icon-grey" />
+              <div>
+                <small>Sold By</small>
+                <p>{farmerName}</p>
+              </div>
+            </div>
+            <div className="meta-item">
+              <MapPin size={18} className="icon-grey" />
+              <div>
+                <small>Location</small>
+                <p>Nagpur Mandi</p>
+              </div>
+            </div>
+            <div className="meta-item">
+              <Calendar size={18} className="icon-grey" />
+              <div>
+                <small>Harvest Date</small>
+                <p>{new Date(product.harvestDate).toLocaleDateString()}</p>
+              </div>
+            </div>
+            <div className="meta-item">
+              <ShieldCheck size={18} className="icon-grey" />
+              <div>
+                <small>Quality Check</small>
+                <p>Verified</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="description-box">
+            <h3>Description</h3>
+            <p>{product.description || "No description provided by the farmer. This is fresh produce directly from the farm."}</p>
+          </div>
+
+          <div className="action-buttons">
+            <button className="buy-now-btn">Buy Now</button>
+            <button className="contact-btn">Contact Farmer</button>
+          </div>
+
+        </div>
       </div>
     </div>
   );
 };
 
-export default Product;
+export default Products;

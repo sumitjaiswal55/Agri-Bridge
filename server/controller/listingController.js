@@ -152,3 +152,19 @@ exports.getMyListings = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+
+// Get Single Listing by ID
+exports.getListingById = async (req, res) => {
+    try {
+        const listing = await Listing.findById(req.params.id).populate('seller', 'name');
+
+        if (!listing) {
+            return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+
+        res.status(200).json(listing);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
