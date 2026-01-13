@@ -32,7 +32,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 
 app.get("/", (req, res)=>{
-    res.send(`Server is running on port ${port}`);
+    res.send(`Server is running on port ${PORT}`);
 });
 
 app.use("/auth", userRoute);
