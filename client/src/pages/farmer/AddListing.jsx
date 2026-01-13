@@ -66,7 +66,7 @@ const AddListing = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/api/create",
+        "https://agribridgebackend-xi.vercel.app/api/create",
         data,
         {
           headers: {
