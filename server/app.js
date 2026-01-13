@@ -12,7 +12,7 @@ app.use(cors({
   origin: [
     "http://localhost:5173",
     "https://agribridge.sumitjaiswal.in",
-    "https://agri-bridge-five.vercel.app"
+    "https://agribridge-brown.vercel.app/"
   ],
   credentials: true
 }));
