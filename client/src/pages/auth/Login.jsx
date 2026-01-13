@@ -27,7 +27,7 @@ const Login = () => {
     setError("");
 
     try {
-      const res = await fetch("https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/auth/login", {
+      const res = await fetch("https://agribridgebackend-xi.vercel.app/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
