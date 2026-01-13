@@ -15,14 +15,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Handle Input Change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError(""); // Typing shuru karte hi error hata do
   };
 
-  // Handle Login Submit
-  // Handle Login Submit
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

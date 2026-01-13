@@ -9,8 +9,12 @@ const cors = require("cors");
 
 
 app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true 
+  origin: [
+    "http://localhost:5173",
+    "https://agribridge.sumitjaiswal.in",
+    "https://agri-bridge-five.vercel.app"
+  ],
+  credentials: true
 }));
 
 
