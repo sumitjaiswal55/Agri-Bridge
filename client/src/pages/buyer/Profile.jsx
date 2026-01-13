@@ -48,7 +48,7 @@ useEffect(() => {
         }
 
         // 2. API Call (/auth/profile wala)
-        const res = await axios.get(`https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/auth/profile`, {
+        const res = await axios.get(`https://agribridgebackend-xi.vercel.app/auth/profile`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -122,7 +122,7 @@ useEffect(() => {
         ],
       };
 
-      await axios.put(`https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/api/users/${userId}`, updatedData);
+      await axios.put(`https://agribridgebackend-xi.vercel.app/api/users/${userId}`, updatedData);
 
       setIsEditing(false);
       alert("Profile Updated Successfully!");
