@@ -26,7 +26,7 @@ const ProductGrid = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get('https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/api/all');
+        const res = await axios.get('https://agribridgebackend-xi.vercel.app/api/all');
         if (res.data.success && Array.isArray(res.data.data)) {
           const realData = res.data.data.map((item) => ({
             id: item._id, // Ye ID URL me jayegi
