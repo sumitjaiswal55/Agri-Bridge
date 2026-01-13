@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowLeft, MapPin, Calendar, User, Package, ShieldCheck } from 'lucide-react';
-import "./buyer.css"
+import "./Buyer.css"
 
 const Products = () => {
   const { id } = useParams(); // URL se ID nikali
