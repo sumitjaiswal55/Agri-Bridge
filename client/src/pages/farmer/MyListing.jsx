@@ -18,7 +18,7 @@ const MyListing = () => {
   const fetchListings = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app/api/my-listings", {
+      const response = await axios.get("https://agribridgebackend-xi.vercel.app/api/my-listings", {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
