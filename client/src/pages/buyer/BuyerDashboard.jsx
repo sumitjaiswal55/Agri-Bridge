@@ -6,7 +6,7 @@ import {
 
 // Product Grid Component ko import kar rahe hain (Next step me banayenge)
 import ProductGrid from './ProductGrid'; 
-import './buyer.css'; // Separate CSS file
+import './Buyer.css'; // Separate CSS file
 import Navbar from './Navbar';
 import Filter from "./Filter";
 
