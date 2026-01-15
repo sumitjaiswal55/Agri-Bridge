@@ -38,20 +38,17 @@ const Dashboard = () => {
         </button>
       </header>
 
-      {/* ===== OVERLAY ===== */}
       <div
         className={`sidebar-overlay ${sidebarOpen ? "show" : ""}`}
         onClick={() => setSidebarOpen(false)}
       ></div>
 
-      {/* ===== SIDEBAR ===== */}
       <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <h3>
             AgriBridge <span>Panel</span>
           </h3>
 
-          {/* Close button only mobile */}
           <button
             className="close-sidebar"
             onClick={() => setSidebarOpen(false)}
@@ -97,7 +94,6 @@ const Dashboard = () => {
         </ul>
       </aside>
 
-      {/* ===== MAIN CONTENT ===== */}
       <main className="main-content">
         <header className="dashboard-header">
           <div>
