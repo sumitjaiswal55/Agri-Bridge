@@ -1,232 +1,212 @@
-/* --- Navbar Base --- */
-.navbar {
-  height: var(--nav-height, 70px);
+:root {
+  --primary-green: #28a745;
+  --dark-green: #1a2b23;
+  --light-bg: rgba(255, 255, 255, 0.95);
+  --transition: all 0.3s ease;
+}
+
+/* ================= NAVBAR ================= */
+
+.custom-navbar {
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
-  background-color: transparent;
-  transition: 0.3s ease;
-  display: flex;
-  align-items: center;
+  padding: 18px 0;
+  background: transparent;
+  transition: var(--transition);
 }
 
-.navbar.scrolled {
-  background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+.custom-navbar.scrolled {
+  background: var(--light-bg);
+  padding: 12px 0;
   backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
 .nav-container {
+  max-width: 1250px;
+  margin: auto;
+  padding: 0 25px;
   display: flex;
-  justify-content: space-between; /* Brand Left, Menu/Hamburger Right */
   align-items: center;
-  width: 100%;
-  max-width: 1200px; /* Page se bahar na jaye */
-  margin: 0 auto;
-  padding: 0 20px;
+  justify-content: space-between;
+  position: relative; /* IMPORTANT */
 }
 
-.navbar-brand {
-  font-size: 1.5rem; /* Thoda chota kiya taaki space bache */
+
+/* ================= LOGO ================= */
+
+.nav-brand {
+  display: flex;
+  font-size: 1.6rem;
   font-weight: 800;
   text-decoration: none;
-  white-space: nowrap; /* Text break na ho */
 }
 
-.brand-agri { color: #28a745; } /* Primary Green */
-.brand-bridge { color: #333; }
+.text-agri {
+  color: var(--primary-green);
+}
 
-/* --- Desktop Menu --- */
-.nav-menu {
+.text-bridge {
+  color: var(--dark-green);
+}
+
+/* ================= DESKTOP LINKS ================= */
+
+.nav-links-wrapper {
   display: flex;
-  align-items: center;
+  list-style: none;
   gap: 30px;
 }
 
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 25px;
-  margin: 0;
-  padding: 0;
+.nav-links-wrapper a {
+  text-decoration: none;
+  color: #444;
+  font-weight: 500;
+  transition: var(--transition);
 }
 
-.nav-links a {
+.nav-links-wrapper a:hover {
+  color: var(--primary-green);
+}
+
+/* ================= AUTH BUTTONS ================= */
+
+.nav-desktop-auth {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-btn-login {
+  padding: 10px 22px;
+  border: 1.5px solid var(--primary-green);
+  background: transparent;
+  color: var(--primary-green);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.nav-btn-signup {
+  padding: 10px 22px;
+  background: var(--primary-green);
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.nav-btn-signup:hover {
+  background: #218838;
+}
+
+/* ================= HAMBURGER ================= */
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.nav-bar {
+  width: 26px;
+  height: 3px;
+  background: var(--dark-green);
+  transition: var(--transition);
+}
+
+.nav-hamburger.active .nav-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-hamburger.active .nav-bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.nav-hamburger.active .nav-bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ================= MOBILE ================= */
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 280px;
+  height: 100vh;
+  background: #fff;
+  padding: 80px 30px;
+  transition: 0.4s ease;
+  z-index: 1050;
+  list-style: none;
+}
+
+.mobile-menu.open {
+  left: 0;
+}
+
+.mobile-menu a {
   text-decoration: none;
   color: #333;
   font-weight: 500;
-  font-size: 0.95rem;
-  transition: 0.3s;
 }
 
-.nav-links a:hover { color: #28a745; }
-
-/* --- Hamburger Icon --- */
-.hamburger {
-  display: none;
-  cursor: pointer;
-  order: 2; /* Ensure it stays right */
+.mobile-menu li {
+  margin-bottom: 20px;
 }
 
-.bar {
-  display: block;
-  width: 25px;
-  height: 3px;
-  margin: 5px 0;
-  transition: 0.3s;
-  background-color: #333;
+.mobile-header {
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 
-/* --- Mobile Responsiveness --- */
-@media (max-width: 768px) {
-  .hamburger {
-    display: block;
-  }
-
-  /* Hamburger Animation */
-  .hamburger.active .bar:nth-child(2) { opacity: 0; }
-  .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-  .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-  .nav-menu {
-    position: fixed;
-    right: -100%; /* Right side se hide */
-    top: var(--nav-height, 70px);
-    flex-direction: column;
-    background-color: #fff;
-    width: 70%; /* Pura screen cover nahi karega */
-    height: 100vh;
-    transition: 0.4s;
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-    padding-top: 50px;
-    align-items: center;
-  }
-
-  .nav-menu.active {
-    right: 0; /* Slide in from right */
-  }
-
-  .nav-links {
-    flex-direction: column;
-    width: 100%;
-    gap: 30px;
-  }
-
-  .nav-buttons {
-    flex-direction: column;
-    width: 80%;
-    margin-top: 30px;
-    gap: 15px;
-  }
-}
-
-/* Footer Section */
-
-/* --- 8. Footer Section --- */
-.footer-section {
-  background-color: #e6fce7; /* Aapka preferred light green color */
-  padding: 60px 0 30px;
-  margin-top: 80px;
-  border-top: 1px solid #d1e7d2;
-}
-
-.footer-content {
+.mobile-auth-btns {
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 25px;
+  gap: 15px;
 }
 
-/* Logo Styling */
-.footer-logo {
-  height: 50px; /* Logo ki height fix ki taaki bikhre nahi */
-  margin-bottom: 15px;
-  transition: var(--transition);
+/* Overlay */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
 }
 
-.footer-logo:hover {
-  transform: scale(1.05);
+.nav-overlay.show {
+  display: block;
 }
 
-.footer-tagline {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--primary-green);
-  margin: 0;
-}
+/* ================= RESPONSIVE ================= */
 
-/* Navigation Links */
-.footer-nav {
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap; /* Mobile par wrap ho jayega */
-  justify-content: center;
-}
+@media (max-width: 992px) {
 
-.footer-link {
-  text-decoration: none;
-  color: var(--text-dark);
-  font-weight: 500;
-  font-size: 1rem;
-  position: relative;
-  transition: var(--transition);
-}
-
-/* Hover Effect: Link ke neeche line aayegi */
-.footer-link::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -4px;
-  left: 0;
-  background-color: var(--primary-green);
-  transition: width 0.3s ease;
-}
-
-.footer-link:hover {
-  color: var(--primary-green);
-}
-
-.footer-link:hover::after {
-  width: 100%;
-}
-
-/* Divider Line */
-.footer-divider {
-  width: 100%;
-  max-width: 600px;
-  height: 1px;
-  background-color: #cbd5e1; /* Light grey line */
-  margin: 10px 0;
-}
-
-/* Credits */
-.footer-credits p {
-  font-size: 0.9rem;
-  color: #64748b; /* Muted text color */
-  margin: 0;
-}
-
-.footer-credits strong {
-  color: var(--primary-green);
-}
-
-/* --- Responsive Adjustments --- */
-@media (max-width: 600px) {
-  .footer-section {
-    padding: 40px 0 20px;
+  .nav-hamburger {
+    display: flex;
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
-  .footer-tagline {
-    font-size: 1rem;
-    padding: 0 20px;
+  .nav-brand {
+    margin-right: auto; /* Logo always LEFT */
   }
 
-  .footer-nav {
-    gap: 15px;
-    flex-direction: column; /* Mobile par vertical stack */
+  .nav-links-wrapper {
+    display: none;
+  }
+
+  .nav-desktop-auth {
+    display: none;
   }
 }

@@ -1,5 +1,6 @@
 import video from "../../assets/Sec2.mp4"; 
 
+
 const About = () => {
   return (
     <section id="about" className="about-section">
@@ -22,7 +23,7 @@ const About = () => {
         </div>
 
         <div className="about-content">
-          <span className="badge">🌱 Who We Are</span>
+          {/* <span className="badge">🌱 Who We Are</span> */}
           <h2 className="section-title">
             About <span className="highlight">AgriBridge</span>
           </h2>

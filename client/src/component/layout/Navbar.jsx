@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import "./Layout.css"; 
+import { Link, useNavigate } from "react-router-dom";
+import "./Layout.css";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -8,50 +8,63 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
-      <div className="nav-container">
-        {/* Brand Logo */}
-        <Link className="navbar-brand" to="/" onClick={closeMenu}>
-          <span className="brand-agri">Agri</span>
-          <span className="brand-bridge">Bridge</span>
-        </Link>
+    <>
+      <nav className={`custom-navbar ${scrolled ? "scrolled" : ""}`}>
+        <div className="nav-container">
 
-        {/* Hamburger - Ab Right Side me dikhega */}
-        <div className={`hamburger ${isOpen ? "active" : ""}`} onClick={toggleMenu}>
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
-        </div>
+          {/* Logo - Left */}
+          <Link to="/" className="nav-brand" onClick={closeMenu}>
+            <span className="text-agri">Agri</span>
+            <span className="text-bridge">Bridge</span>
+          </Link>
 
-        {/* Menu Wrapper */}
-        <div className={`nav-menu ${isOpen ? "active" : ""}`}>
-          <ul className="nav-links">
-            <li><Link to="/products" onClick={closeMenu}>Products</Link></li>
-            <li><Link to="/about" onClick={closeMenu}>About Us</Link></li>
-            <li><Link to="/services" onClick={closeMenu}>Services</Link></li>
-            <li><Link to="/process" onClick={closeMenu}>How it Works</Link></li>
+          {/* Desktop Links */}
+          <ul className="nav-links-wrapper">
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/services">Our Services</Link></li>
+            <li><Link to="/process">How it Works</Link></li>
           </ul>
 
-          <div className="nav-buttons">
-            <button className="btn-outline" onClick={() => { navigate("/login"); closeMenu(); }}>
-              Login
-            </button>
-            <button className="btn-filled" onClick={() => { navigate("/signup"); closeMenu(); }}>
-              Register
-            </button>
+          {/* Desktop Auth Buttons */}
+          <div className="nav-desktop-auth">
+            <button className="nav-btn-login" onClick={() => navigate("/login")}>Login</button>
+            <button className="nav-btn-signup" onClick={() => navigate("/signup")}>Register</button>
           </div>
+
+          {/* Hamburger - Mobile Right */}
+          <div className={`nav-hamburger ${isOpen ? "active" : ""}`} onClick={toggleMenu}>
+            <span className="nav-bar"></span>
+            <span className="nav-bar"></span>
+            <span className="nav-bar"></span>
+          </div>
+
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Mobile Sidebar */}
+      <div className={`nav-overlay ${isOpen ? "show" : ""}`} onClick={closeMenu}></div>
+
+      <ul className={`mobile-menu ${isOpen ? "open" : ""}`}>
+        <li className="mobile-header">Menu</li>
+        <li><Link to="/about" onClick={closeMenu}>About Us</Link></li>
+        <li><Link to="/services" onClick={closeMenu}>Our Services</Link></li>
+        <li><Link to="/process" onClick={closeMenu}>How it Works</Link></li>
+
+        <div className="mobile-auth-btns">
+          <button className="nav-btn-login" onClick={() => { navigate("/login"); closeMenu(); }}>Login</button>
+          <button className="nav-btn-signup" onClick={() => { navigate("/signup"); closeMenu(); }}>Register</button>
+        </div>
+      </ul>
+    </>
   );
 };
 

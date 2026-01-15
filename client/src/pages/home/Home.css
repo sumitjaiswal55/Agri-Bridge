@@ -1,101 +1,101 @@
-/* Entire Slider Container */
-.custom-slick-slider {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
   position: relative;
-  max-width: 100%;
+}
+
+.container {
+  max-width: 1200px;
   margin: 0 auto;
-  overflow: hidden;
-}
-
-/* Each Slide Item */
-.slider-item {
-  position: relative;
-}
-
-.slider-item img {
+  padding: 0 20px;
   width: 100%;
-  height: 585px;
-  object-fit: cover;
-  /* display: block; */
 }
 
-/* Text Overlay */
-.slider-caption {
-  position: absolute;
-  top: 30%;
-  left: 10%;
-  color: white;
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
-  z-index: 10;
+.hero-section {
+  padding: 100px 0 60px;
+  background: #f9fdfa; 
+  overflow: hidden; 
 }
 
-/* Text Styles */
-.slider-caption h2 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; 
+  gap: 40px;
 }
 
-.slider-caption p {
-  font-size: 1.2rem;
-  max-width: 500px;
+.hero-content {
+  flex: 1;
+  min-width: 320px; 
+  max-width: 600px;
+  z-index: 2;
 }
 
-
-/* Fix arrows */
-.slick-prev,
-.slick-next {
-  z-index: 20;
-  width: 40px;
-  height: 40px;
-}
-
-/* Align arrows inside image */
-.slick-prev {
-  left: 20px;
-}
-.slick-next {
-  right: 20px;
-}
-
-/* Style arrow icons */
-/* Arrow icon color and size */
-.slick-prev:before,
-.slick-next:before {
-  font-size: 23px;
-  color: rgb(28, 108, 44); /* 🔥 Set arrow color to green */
-  opacity: 1;
-}
-
-
-
-/*CSS for buttons */
-
-.btn1:hover {
-  background-color: rgb(251, 156, 36) !important;
-  color: rgb(10, 10, 10) !important;
-}
-
-.btn2:hover {
-  background-color: rgb(16, 154, 44) !important;
-  color: white !important;
-}
-
-/* Underline below the headings */
-
-
-.underline2 {
-  position: relative;
+.badge {
   display: inline-block;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
+  background: #e6f4ea;
+  color: #28a745;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  max-width: fit-content; 
 }
 
-.underline2::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 3px;
-  width: 100%;
-  background-color: rgb(251, 156, 36);
-  border-radius: 2px;
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem); 
+  line-height: 1.2;
+  color: #1a2b23;
+  margin-bottom: 1.5rem;
 }
+
+.highlight {
+  color: #28a745;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.hero-image-wrapper {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-image {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  object-fit: cover;
+}
+
+.floating-card {
+  position: absolute;
+  bottom: 30px;
+  left: 10px; 
+  background: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 5;
+  white-space: nowrap;
+}
+
