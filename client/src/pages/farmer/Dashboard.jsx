@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FaHome,
   FaLeaf,
@@ -6,110 +6,113 @@ import {
   FaPlus,
   FaSignOutAlt,
   FaMoneyCheck,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
-// Note: Hum 'Outlet' aur 'NavLink' use karenge
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import "./farmer.css";
 
-// Yahan ab Page components (Home, AddListing etc) import karne ki zaroorat nahi hai.
-// Wo sab App.jsx me handle ho rahe hain.
-
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Logout Function
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Token delete karo
-    navigate("/login"); // Login page pe bhej do
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   return (
     <div className="dashboard-container">
-      {/* --- Sidebar --- */}
-      <aside className="sidebar">
+
+      {/* ===== MOBILE HEADER ===== */}
+      <header className="mobile-header">
+        <h3 className="mobile-logo">
+          AgriBridge <span>Panel</span>
+        </h3>
+
+        <button
+          className="hamburger-btn"
+          onClick={() => setSidebarOpen(true)}
+        >
+          <FaBars />
+        </button>
+      </header>
+
+      {/* ===== OVERLAY ===== */}
+      <div
+        className={`sidebar-overlay ${sidebarOpen ? "show" : ""}`}
+        onClick={() => setSidebarOpen(false)}
+      ></div>
+
+      {/* ===== SIDEBAR ===== */}
+      <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <h3>
             AgriBridge <span>Panel</span>
           </h3>
+
+          {/* Close button only mobile */}
+          <button
+            className="close-sidebar"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <FaTimes />
+          </button>
         </div>
-        
+
         <ul className="sidebar-menu">
-          {/* Dashboard Home */}
           <li>
-            <NavLink 
-              to="/dashboard" 
-              end // 'end' ka matlab ye tabhi active hoga jab URL exactly '/dashboard' ho
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/dashboard" end>
               <FaHome /> Dashboard
             </NavLink>
           </li>
 
-          {/* Add Crops */}
           <li>
-            <NavLink 
-              to="/dashboard/add-listing"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/dashboard/add-listing">
               <FaPlus /> Add Crops
             </NavLink>
           </li>
 
-          {/* My Crops */}
           <li>
-            <NavLink 
-              to="/dashboard/my-listings"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/dashboard/my-listings">
               <FaLeaf /> My Crops
             </NavLink>
           </li>
 
-          {/* Transactions */}
           <li>
-            <NavLink 
-              to="/dashboard/transactions"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/dashboard/transactions">
               <FaMoneyCheck /> Transaction
             </NavLink>
           </li>
 
-          {/* Orders */}
           <li>
-            <NavLink 
-              to="/dashboard/orders"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
+            <NavLink to="/dashboard/orders">
               <FaShoppingCart /> Orders
             </NavLink>
           </li>
 
-          {/* Logout Button */}
           <li className="logout" onClick={handleLogout}>
             <FaSignOutAlt /> Logout
           </li>
         </ul>
       </aside>
 
-      {/* --- Main Content --- */}
+      {/* ===== MAIN CONTENT ===== */}
       <main className="main-content">
         <header className="dashboard-header">
-          <div className="header-left">
+          <div>
             <h2>Welcome back, Sumit! 👋</h2>
             <p>Here's what's happening with your farm today.</p>
           </div>
-          
-          <button 
-            className="btn-add-crop" 
+
+          <button
+            className="btn-add-crop"
             onClick={() => navigate("/dashboard/add-listing")}
           >
             <FaPlus /> Add New Crop
           </button>
         </header>
 
-        {/* 👇 JAADU YAHAN HOGA (Dynamic Content) */}
-        {/* URL ke hisaab se App.jsx yahan sahi component fit kar dega */}
         <div className="page-content">
           <Outlet />
         </div>

@@ -24,15 +24,6 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
-.nav-container {
-  max-width: 1250px;
-  margin: auto;
-  padding: 0 25px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative; /* IMPORTANT */
-}
 
 
 /* ================= LOGO ================= */
@@ -189,24 +180,15 @@
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 992px) {
-
-  .nav-hamburger {
-    display: flex;
-    position: absolute;
-    right: 25px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .nav-brand {
-    margin-right: auto; /* Logo always LEFT */
-  }
-
   .nav-links-wrapper {
     display: none;
   }
 
   .nav-desktop-auth {
     display: none;
+  }
+
+  .nav-hamburger {
+    display: flex;
   }
 }
