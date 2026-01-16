@@ -33,34 +33,18 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           {/* --- Protected Dashboard Routes --- */}
-          {/* Ye poora block ProtectedRoute ke andar wrap hai */}
           <Route 
             path="/dashboard" 
             element={
               <ProtectedRoute>
                 <DashboardLayout />
               </ProtectedRoute>
-            }
-          >
-            {/* Nested Routes (Ye DashboardLayout ke <Outlet /> me dikhenge) */}
-            
-            {/* Jab sirf /dashboard khulega */}
+            }>
             <Route index element={<FarmerHome />} /> 
-            
-            {/* URL: /dashboard/add-listing */}
             <Route path="add-listing" element={<AddListing />} />
-            
-            {/* URL: /dashboard/my-listings */}
             <Route path="my-listings" element={<MyListing />} />
-            
-            {/* URL: /dashboard/transactions */}
             <Route path="transactions" element={<Transaction />} />
-            
-            {/* URL: /dashboard/orders */}
             <Route path="orders" element={<Orders />} />
-
-
-            
           </Route>
             <Route path="product" element={<BuyerDashboard />} />
             <Route path="product/:id" element={<ProductDetails />} />
