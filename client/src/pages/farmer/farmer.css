@@ -5,9 +5,9 @@
 }
 
 /* ================= LAYOUT ================= */
-.dashboard-container {
+/* .dashboard-container {
   display: flex;
-}
+} */
 
 /* ================= MOBILE HEADER ================= */
 .mobile-header {
@@ -20,7 +20,7 @@
   background: #fff;
   border-bottom: 1px solid #eee;
   padding: 0 20px;
-  z-index: 400;
+  /* z-index: 400; */
   align-items: center;
   justify-content: space-between;
 }
@@ -38,6 +38,9 @@
   background: none;
   border: none;
   font-size: 22px;
+  cursor: pointer;
+  position: relative; /* Ya absolute/fixed jo bhi aapne diya ho */
+  z-index: 1001; /* Overlay (998) aur Sidebar (999) se upar */
   cursor: pointer;
 }
 
@@ -149,38 +152,6 @@
   opacity: 1;
   pointer-events: auto;
 }
-
-/* ================= MOBILE ================= */
-@media (max-width: 768px) {
-
-  .mobile-header {
-    display: flex;
-  }
-
-  .sidebar {
-    transform: translateX(-100%);
-  }
-
-  .sidebar.open {
-    transform: translateX(0);
-  }
-
-  .close-sidebar {
-    display: block;
-  }
-
-  .main-content {
-    margin-left: 0;
-    padding-top: 80px;
-  }
-
-  .dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-}
-
 
 /* --- Main Content --- */
 .main-content {
@@ -339,9 +310,31 @@ td {
 /* --- Mobile Responsive Tweaks --- */
 @media (max-width: 768px) {
   .sidebar {
-    display: none; /* Mobile pe sidebar chhupa do ya hamburger menu lagao */
+    display: flex; /* Mobile pe sidebar chhupa do ya hamburger menu lagao */
   }
-  
+
+  .mobile-header {
+    display: flex;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .close-sidebar {
+    display: block;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+    
   .main-content {
     margin-left: 0;
     padding: 15px;
