@@ -6,6 +6,13 @@
 }
 
 /* ================= NAVBAR ================= */
+/* Root variables (ensure these exist in your project) */
+:root {
+  --primary-green: #2ecc71;
+  --dark-green: #27ae60;
+  --light-bg: rgba(255, 255, 255, 0.95);
+  --transition: all 0.3s ease;
+}
 
 .custom-navbar {
   position: fixed;
@@ -15,6 +22,10 @@
   padding: 18px 0;
   background: transparent;
   transition: var(--transition);
+  
+  /* Alignment Fix */
+  display: flex;
+  justify-content: center; /* Content ko center mein rakhne ke liye */
 }
 
 .custom-navbar.scrolled {
@@ -24,10 +35,16 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
-
+/* Wrapper to hold everything inside the navbar */
+.nav-container {
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between; /* Logo, Links, Buttons ke beech space */
+  align-items: center; /* Sab kuch vertically center karne ke liye */
+}
 
 /* ================= LOGO ================= */
-
 .nav-brand {
   display: flex;
   font-size: 1.6rem;
@@ -35,20 +52,16 @@
   text-decoration: none;
 }
 
-.text-agri {
-  color: var(--primary-green);
-}
-
-.text-bridge {
-  color: var(--dark-green);
-}
+.text-agri { color: var(--primary-green); }
+.text-bridge { color: var(--dark-green); }
 
 /* ================= DESKTOP LINKS ================= */
-
 .nav-links-wrapper {
   display: flex;
   list-style: none;
   gap: 30px;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links-wrapper a {
@@ -63,7 +76,6 @@
 }
 
 /* ================= AUTH BUTTONS ================= */
-
 .nav-desktop-auth {
   display: flex;
   gap: 15px;
@@ -77,6 +89,7 @@
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+  transition: var(--transition);
 }
 
 .nav-btn-signup {
@@ -87,6 +100,7 @@
   border: none;
   cursor: pointer;
   font-weight: 600;
+  transition: var(--transition);
 }
 
 .nav-btn-signup:hover {
@@ -167,7 +181,7 @@
 /* Overlay */
 .nav-overlay {
   display: none;
-  position: fixed;
+  /* position: fixed; */
   inset: 0;
   background: rgba(0,0,0,0.4);
   z-index: 1000;
