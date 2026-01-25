@@ -5,6 +5,11 @@ import ProtectedRoute from "./component/ProtectedRoute";
 import Signup from "./pages/auth/Signup";
 import Login from "./pages/auth/Login";
 import HomeMain from "./pages/home/HomeMain";
+import AboutUs from "./pages/home/AboutUs";
+import Services from "./pages/home/Services";
+import Contact from "./pages/home/Contact";
+import FAQ from "./pages/home/FAQ";
+import Privacy from "./pages/home/Privacy";
 import DashboardLayout from "./pages/farmer/Dashboard";
 import FarmerHome from "./pages/farmer/Home";
 import AddListing from "./pages/farmer/AddListing";
@@ -22,6 +27,11 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<HomeMain />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route

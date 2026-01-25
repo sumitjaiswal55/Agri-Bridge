@@ -1,0 +1,251 @@
+/* Contact Page Styles */
+
+.contact-page {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.contact-hero {
+  background: linear-gradient(135deg, #28a745 0%, #1f8a34 100%);
+  color: white;
+  padding: 100px 20px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.contact-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.contact-hero p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Contact Info Section */
+.contact-info-section {
+  padding: 80px 20px;
+  background: #f9fdfa;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+}
+
+.info-card {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.15);
+}
+
+.info-icon {
+  color: #28a745;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.info-card h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.info-main {
+  font-size: 1.1rem;
+  color: #28a745;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.info-sub {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Contact Section */
+.contact-section {
+  padding: 80px 20px;
+  background: white;
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: flex-start;
+  max-width: 1200px;
+}
+
+.contact-form-wrapper h2 {
+  font-size: 2rem;
+  color: #28a745;
+  margin-bottom: 30px;
+}
+
+/* Contact Form */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px 15px;
+  border: 2px solid #eee;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #28a745;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+/* Submit Button */
+.btn-submit {
+  background: #28a745;
+  color: white;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-submit:hover {
+  background: #1f8a34;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+/* Success Message */
+.success-message {
+  background: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* Contact Image */
+.contact-image img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Quick Help Section */
+.quick-help {
+  padding: 80px 20px;
+  background: #f9fdfa;
+}
+
+.quick-help h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #28a745;
+  margin-bottom: 60px;
+}
+
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+}
+
+.help-card {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.help-card:hover {
+  transform: translateY(-5px);
+}
+
+.help-card h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.help-card p {
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.help-card a {
+  color: #28a745;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.help-card a:hover {
+  color: #1f8a34;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contact-hero h1 {
+    font-size: 2rem;
+  }
+
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact-form-wrapper h2 {
+    font-size: 1.5rem;
+  }
+
+  .quick-help h2 {
+    font-size: 1.8rem;
+  }
+
+  .help-grid {
+    grid-template-columns: 1fr;
+  }
+}

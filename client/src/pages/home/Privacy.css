@@ -1,0 +1,109 @@
+/* Privacy Policy Page Styles */
+
+.privacy-page {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.privacy-hero {
+  background: linear-gradient(135deg, #28a745 0%, #1f8a34 100%);
+  color: white;
+  padding: 100px 20px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.privacy-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.privacy-hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Privacy Content */
+.privacy-content {
+  padding: 80px 20px;
+  background: white;
+}
+
+.policy-text {
+  max-width: 900px;
+  line-height: 1.8;
+  color: #555;
+}
+
+.policy-text h2 {
+  font-size: 1.8rem;
+  color: #28a745;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #28a745;
+  padding-bottom: 10px;
+}
+
+.policy-text h2:first-child {
+  margin-top: 0;
+}
+
+.policy-text h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.policy-text p {
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.policy-text ul {
+  margin: 20px 0 20px 30px;
+}
+
+.policy-text li {
+  margin-bottom: 12px;
+  list-style-type: disc;
+}
+
+.policy-text li strong {
+  color: #28a745;
+}
+
+.policy-footer {
+  background: #f9fdfa;
+  padding: 30px;
+  border-radius: 8px;
+  margin-top: 50px;
+  text-align: center;
+  border-left: 4px solid #28a745;
+  font-size: 1.1rem;
+  color: #28a745;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .privacy-hero h1 {
+    font-size: 2rem;
+  }
+
+  .privacy-content {
+    padding: 40px 20px;
+  }
+
+  .policy-text h2 {
+    font-size: 1.4rem;
+  }
+
+  .policy-text h3 {
+    font-size: 1.1rem;
+  }
+
+  .policy-text {
+    font-size: 0.95rem;
+  }
+}
