@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
+import Navbar from "../../component/layout/Navbar.jsx";
+import Footer from "../../component/layout/Footer.jsx";
+
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -109,6 +112,9 @@ const Signup = () => {
   };
 
   return (
+
+    <div>
+      <Navbar />
     <div className="auth-wrapper">
       <div className="auth-container">
         {/* Left Side */}
@@ -261,6 +267,8 @@ const Signup = () => {
           </p>
         </div>
       </div>
+    </div>
+      <Footer />
     </div>
   );
 };

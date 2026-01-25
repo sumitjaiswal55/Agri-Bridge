@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
+import Navbar from "../../component/layout/Navbar.jsx";
+import Footer from "../../component/layout/Footer.jsx";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -63,6 +65,8 @@ const Login = () => {
   };
 
   return (
+    <div>
+      <Navbar />
     <div className="auth-wrapper">
       <div className="auth-container">
         {/* Left Side: Welcome Graphic */}
@@ -135,6 +139,8 @@ const Login = () => {
           </p>
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };
