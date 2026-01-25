@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from '../../component/layout/Navbar.jsx';
-import Footer from '../../component/layout/Footer.jsx';
+import Navbar from '../../../component/layout/Navbar.jsx';
+import Footer from '../../../component/layout/Footer.jsx';
 import { Truck, ListChecks, CreditCard, BarChart3, Shield, Headphones } from 'lucide-react';
 import './Services.css';
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Navbar from '../../component/layout/Navbar.jsx';
-import Footer from '../../component/layout/Footer.jsx';
+import Navbar from '../../../component/layout/Navbar.jsx';
+import Footer from '../../../component/layout/Footer.jsx';
 import { ChevronDown } from 'lucide-react';
 import './FAQ.css';
 

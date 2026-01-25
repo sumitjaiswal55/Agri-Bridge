@@ -1,5 +1,5 @@
 import Hero from "./Hero.jsx";
-import About from "./About.jsx";
+import About from "./aboutus/About.jsx";
 import Process from "./Process.jsx";
 import Navbar from "../../component/layout/Navbar.jsx";
 import Footer from "../../component/layout/Footer.jsx";

@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from '../../component/layout/Navbar.jsx';
-import Footer from '../../component/layout/Footer.jsx';
+import Navbar from '../../../component/layout/Navbar.jsx';
+import Footer from '../../../component/layout/Footer.jsx';
 import './Privacy.css';
 
 const Privacy = () => {
