@@ -4,66 +4,155 @@ import "./Layout.css";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Handle scroll effect
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
+  // Handle body scroll lock
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [menuOpen]);
+
+  // Handle escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && menuOpen) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const closeMenu = () => setMenuOpen(false);
+
+  const handleNavClick = (path) => {
+    navigate(path);
+    closeMenu();
+  };
 
   return (
     <>
-      <nav className={`custom-navbar ${scrolled ? "scrolled" : ""}`}>
-        <div className="nav-container">
-
-          {/* Logo - Left */}
-          <Link to="/" className="nav-brand" onClick={closeMenu}>
-            <span className="text-agri">Agri</span>
-            <span className="text-bridge">Bridge</span>
+      {/* Main Navbar */}
+      <nav className={`navbar-wrapper ${scrolled ? "navbar-scrolled" : ""}`}>
+        <div className="navbar-inner">
+          {/* Logo Section */}
+          <Link to="/" className="navbar-logo" onClick={closeMenu}>
+            <span className="logo-agri">Agri</span>
+            <span className="logo-bridge">Bridge</span>
           </Link>
 
-          {/* Desktop Links */}
-          <ul className="nav-links-wrapper">
-            <li><Link to="/about">About Us</Link></li>
-            <li><Link to="/services">Our Services</Link></li>
-            <li><Link to="/process">How it Works</Link></li>
-          </ul>
+          {/* Desktop Navigation Links */}
+          <div className="navbar-desktop-menu">
+            <ul className="navbar-links-list">
+              <li><Link to="/about" className="navbar-link">About Us</Link></li>
+              <li><Link to="/services" className="navbar-link">Our Services</Link></li>
+              <li><Link to="/process" className="navbar-link">How it Works</Link></li>
+            </ul>
+          </div>
 
           {/* Desktop Auth Buttons */}
-          <div className="nav-desktop-auth">
-            <button className="nav-btn-login" onClick={() => navigate("/login")}>Login</button>
-            <button className="nav-btn-signup" onClick={() => navigate("/signup")}>Register</button>
+          <div className="navbar-desktop-buttons">
+            <button 
+              className="navbar-btn navbar-btn-login" 
+              onClick={() => handleNavClick("/login")}
+            >
+              Login
+            </button>
+            <button 
+              className="navbar-btn navbar-btn-signup" 
+              onClick={() => handleNavClick("/signup")}
+            >
+              Register
+            </button>
           </div>
 
-          {/* Hamburger - Mobile Right */}
-          <div className={`nav-hamburger ${isOpen ? "active" : ""}`} onClick={toggleMenu}>
-            <span className="nav-bar"></span>
-            <span className="nav-bar"></span>
-            <span className="nav-bar"></span>
-          </div>
-
+          {/* Mobile Hamburger Menu */}
+          <button 
+            className={`navbar-hamburger ${menuOpen ? "hamburger-open" : ""}`}
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+          >
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+          </button>
         </div>
       </nav>
 
-      {/* Mobile Sidebar */}
-      <div className={`nav-overlay ${isOpen ? "show" : ""}`} onClick={closeMenu}></div>
+      {/* Mobile Menu Overlay */}
+      <div 
+        className={`navbar-overlay ${menuOpen ? "overlay-visible" : ""}`}
+        onClick={closeMenu}
+        role="presentation"
+      ></div>
 
-      <ul className={`mobile-menu ${isOpen ? "open" : ""}`}>
-        <li className="mobile-header">Menu</li>
-        <li><Link to="/about" onClick={closeMenu}>About Us</Link></li>
-        <li><Link to="/services" onClick={closeMenu}>Our Services</Link></li>
-        <li><Link to="/process" onClick={closeMenu}>How it Works</Link></li>
-
-        <div className="mobile-auth-btns">
-          <button className="nav-btn-login" onClick={() => { navigate("/login"); closeMenu(); }}>Login</button>
-          <button className="nav-btn-signup" onClick={() => { navigate("/signup"); closeMenu(); }}>Register</button>
+      {/* Mobile Slide Menu */}
+      <div className={`navbar-mobile-menu ${menuOpen ? "menu-open" : ""}`}>
+        <div className="mobile-menu-header">
+          <h2 className="mobile-menu-title">Menu</h2>
+          <button 
+            className="mobile-menu-close" 
+            onClick={closeMenu}
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
         </div>
-      </ul>
+
+        <div className="mobile-menu-content">
+          <ul className="mobile-menu-list">
+            <li className="mobile-menu-item">
+              <Link to="/about" className="mobile-menu-link" onClick={closeMenu}>
+                About Us
+              </Link>
+            </li>
+            <li className="mobile-menu-item">
+              <Link to="/services" className="mobile-menu-link" onClick={closeMenu}>
+                Our Services
+              </Link>
+            </li>
+            <li className="mobile-menu-item">
+              <Link to="/process" className="mobile-menu-link" onClick={closeMenu}>
+                How it Works
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className="mobile-menu-footer">
+          <button 
+            className="navbar-btn navbar-btn-login" 
+            onClick={() => handleNavClick("/login")}
+          >
+            Login
+          </button>
+          <button 
+            className="navbar-btn navbar-btn-signup" 
+            onClick={() => handleNavClick("/signup")}
+          >
+            Register
+          </button>
+        </div>
+      </div>
     </>
   );
 };
