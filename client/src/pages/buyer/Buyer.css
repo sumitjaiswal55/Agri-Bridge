@@ -8,7 +8,7 @@
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.dashboard-container {
+.dashboard-container-buyer {
   font-family: "Segoe UI", sans-serif;
   background-color: var(--bg-light);
   min-height: 100vh;
@@ -412,7 +412,7 @@
   display: flex; /* Sidebar Left, Content Right */
   gap: 30px;
   position: relative;
-  align-items: flex-start; /* Important: Taaki sidebar stretch na ho */
+  align-items: stretch; /* Allow full height layout */
 }
 
 /* Product Area ko bachi hui jagah lene do */
@@ -587,6 +587,50 @@ input[type="range"] {
   background: #219150;
 }
 
+/* Reset Button */
+.reset-btn {
+  width: 100%;
+  background: #e0e0e0;
+  color: #666;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.reset-btn:hover {
+  background: #d0d0d0;
+}
+
+/* Price Range Inputs */
+.price-inputs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.price-input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+}
+
+.price-input:focus {
+  border-color: var(--primary-green);
+}
+
+.separator {
+  color: #999;
+  font-weight: bold;
+}
+
 /* --- MOBILE RESPONSIVE --- */
 .mobile-filter-bar {
   display: none;
@@ -652,6 +696,19 @@ input[type="range"] {
 
 .grid-wrapper {
   width: 100%;
+}
+
+.grid-header {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.grid-header h2 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  margin: 0;
 }
 
 .section-header {

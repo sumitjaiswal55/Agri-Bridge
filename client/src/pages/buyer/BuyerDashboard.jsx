@@ -13,6 +13,7 @@ import Filter from "./Filter";
 const BuyerDashboard = () => {
   // --- States ---
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [filters, setFilters] = useState(null);
 
   // --- Hero Slider Data ---
   const slides = [
@@ -42,7 +43,7 @@ const BuyerDashboard = () => {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container-buyer">
       
       <Navbar />
 
@@ -87,11 +88,11 @@ const BuyerDashboard = () => {
       {/* ================= MAIN LAYOUT (Filter + Products) ================= */}
       <div className="main-layout">
         {/* --- SIDEBAR FILTERS --- */}
-        <Filter />
+        <Filter onFiltersChange={setFilters} />
 
         {/* --- PRODUCT GRID AREA --- */}
         <main className="product-content-area">
-          <ProductGrid /> 
+          <ProductGrid filters={filters} /> 
         </main>
 
       </div>
