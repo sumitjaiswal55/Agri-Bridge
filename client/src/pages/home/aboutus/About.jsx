@@ -1,4 +1,4 @@
-import video from "../../assets/Sec2.mp4"; 
+import video from "../../../assets/Sec2.mp4"; 
 
 
 const About = () => {
@@ -34,7 +34,7 @@ const About = () => {
             We aim to reduce dependency on middlemen, making the process more transparent, fair, and beneficial for both sides. AgriBridge isn’t just a platform — it’s a step toward a smarter, more sustainable agriculture market.
           </p>
           
-          <a href="/aboutus" className="btn btn-accent mt-4">
+          <a href="/about" className="btn btn-accent mt-4">
             Read About Us →
           </a>
         </div>

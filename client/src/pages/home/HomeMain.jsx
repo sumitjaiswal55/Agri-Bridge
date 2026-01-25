@@ -1,10 +1,10 @@
 import Hero from "./Hero.jsx";
 import About from "./aboutus/About.jsx";
-import Process from "./Process.jsx";
+import Process from "./HeroPage/Process.jsx";
 import Navbar from "../../component/layout/Navbar.jsx";
 import Footer from "../../component/layout/Footer.jsx";
 import "./Home.css";
-import Vision from "./Vision.jsx";
+import Vision from "./HeroPage/Vision.jsx";
 
 const HomeMain = () => {
   return (
