@@ -12,9 +12,12 @@ app.use(cors({
   origin: [
     "http://localhost:5173",
     "https://agribridge.sumitjaiswal.in",
-    "https://agribridge-brown.vercel.app/"
+    "https://agribridge-brown.vercel.app",
+    "https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app"
   ],
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 
