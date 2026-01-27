@@ -38,7 +38,7 @@ const Transaction = () => {
         );
 
         if (response.data.success && Array.isArray(response.data.data)) {
-          const txns = response.data.data.map((listing, index) => {
+          const txns = response.data.data.map((listing) => {
             const amount = listing.pricePerUnit * (listing.quantityAvailable || 1);
             const date = new Date(listing.createdAt || Date.now());
             const today = new Date();

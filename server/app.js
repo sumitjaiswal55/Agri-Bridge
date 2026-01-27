@@ -8,19 +8,34 @@ const productRoute = require("./routes/productRoutes.js");
 const cors = require("cors");
 
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://agribridge.sumitjaiswal.in",
-    "https://agribridge-brown.vercel.app",
-    "https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app"
-  ],
+// CORS Configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "https://agribridge.sumitjaiswal.in",
+      "https://agribridge-brown.vercel.app",
+      "https://agri-bridge-hih9xy86b-sumitjaiswal55s-projects.vercel.app"
+    ];
+    
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+  allowedHeaders: ["Content-Type", "Authorization"],
+  preflightContinue: false,
+  optionsSuccessStatus: 200
+};
 
+app.use(cors(corsOptions));
 
+// Preflight handling
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
