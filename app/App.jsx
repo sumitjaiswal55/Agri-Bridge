@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context'; // Sahi way
+import { SafeAreaProvider } from 'react-native-safe-area-context'; 
 import AppNavigator from './src/navigation/AppNavigator';
 
 SplashScreen.preventAutoHideAsync();
