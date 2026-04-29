@@ -1,181 +1,184 @@
-/* Sigunup page css */
-
-/* --- Authentication Pages (Login/Signup) --- */
-
-.auth-wrapper {
+/* Container & Main Layout */
+.auth-page-root {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   min-height: 100vh;
-  background-color: #fff;
-  padding: 20px;
-  margin-top: 80px;
 }
 
-.auth-container {
-  display: flex;
-  background: white;
-  width: 100%;
-  max-width: 900px;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
-
-/* Left Side (Image) */
-.auth-left {
+.signup-main-content {
   flex: 1;
-  background: url('https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=1000&auto=format&fit=crop') no-repeat center center/cover;
-  position: relative;
+  margin-top: 65px; /* Navbar Fixed Space */
+  background: #fff;
+}
+
+.signup-split {
+  display: flex;
+  min-height: calc(100vh - 65px);
+}
+
+/* LEFT: Visual Side (Immersive Image) */
+.visual-side {
+  flex: 1.1;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+              url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1200&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  padding: 80px;
+  color: #fff;
+}
+
+.visual-overlay-content { max-width: 550px; }
+.b2b-tag { background: #0c831f; padding: 6px 15px; border-radius: 4px; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.visual-overlay-content h1 { font-size: 4rem; font-weight: 900; margin: 25px 0; line-height: 1.1; letter-spacing: -1px; }
+.benefit-list { list-style: none; padding: 0; margin-top: 40px; }
+.benefit-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; font-weight: 600; font-size: 1.2rem; }
+
+/* RIGHT: Form Side (Clean Panel) */
+.form-side {
+  flex: 0.9;
+  background: #f8f9fa;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-}
-
-/* Mobile responsive - Hide image on small screens */
-@media (max-width: 768px) {
-  .auth-left {
-    display: none;
-  }
-}
-
-.auth-overlay {
-  background: rgba(28, 108, 44, 0.8); /* Primary Green Overlay */
   padding: 40px;
-  text-align: center;
+}
+
+.form-wrapper-box {
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  max-width: 520px;
+  background: #fff;
+  padding: 45px;
+  border-radius: 24px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.06);
 }
 
-.auth-overlay h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-}
+.form-intro h2 { font-size: 2rem; font-weight: 900; color: #111; margin-bottom: 8px; }
+.form-intro p { color: #777; margin-bottom: 35px; font-size: 15px; }
 
-/* Right Side (Form) */
-.auth-right {
-  flex: 1.2;
-  padding: 40px 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.input-box { margin-bottom: 20px; }
+.input-box label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #444; margin-bottom: 10px; }
+.input-box input { width: 100%; padding: 14px 18px; border: 1.5px solid #eee; border-radius: 12px; outline: none; transition: 0.3s; font-size: 15px; }
+.input-box input:focus { border-color: #0c831f; background: #f0f7f0; }
 
-.auth-header h2 {
-  color: var(--primary-green);
-  margin-bottom: 10px;
+/* Location UI */
+.location-input-wrapper { position: relative; }
+.location-input-wrapper textarea {
+  width: 100%; padding: 15px; border: 1.5px solid #eee; border-radius: 12px;
+  resize: none; font-size: 14px; outline: none; transition: 0.3s;
 }
+.location-input-wrapper textarea:focus { border-color: #0c831f; }
 
-.auth-header p {
-  color: var(--text-light);
-  margin-bottom: 30px;
+.gps-btn-pro {
+  position: absolute; right: 12px; bottom: 12px;
+  background: #0c831f; color: #fff; border: none; padding: 8px 15px;
+  border-radius: 8px; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; gap: 6px; cursor: pointer; transition: 0.2s;
 }
-
-/* Form Styles */
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-row {
-  display: flex;
-  gap: 15px;
-}
-
-.form-row .form-group {
-  flex: 1;
-}
-
-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: var(--text-dark);
-  font-size: 0.9rem;
-}
-
-input, .form-select {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: var(--transition);
-  outline: none;
-}
-
-input:focus, .form-select:focus {
-  border-color: var(--primary-green);
-  background-color: #f0fdf4;
-}
-
-/* Location Specifics */
-.location-box {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-location {
-  background-color: var(--light-green);
-  border: 1px solid var(--primary-green);
-  color: var(--primary-green);
-  padding: 0 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.btn-location:hover {
-  background-color: var(--primary-green);
-  color: white;
-}
-
-.status-text {
-  color: var(--primary-green);
-  font-size: 0.8rem;
-  margin-top: 5px;
-  display: block;
-}
+.gps-btn-pro:hover { background: #096d18; }
+.loc-status-msg { display: block; margin-top: 8px; font-size: 11px; font-weight: 600; color: #888; }
+.loc-status-msg.success { color: #0c831f; }
 
 /* Submit Button */
-.btn-block {
-  width: 100%;
-  margin-top: 10px;
-  padding: 14px;
+.submit-btn-pro {
+  width: 100%; padding: 18px; background: #0c831f; color: #fff; border: none;
+  border-radius: 14px; font-size: 1.1rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  cursor: pointer; transition: 0.3s; margin-top: 15px;
 }
+.submit-btn-pro:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(12, 131, 31, 0.2); }
 
-.auth-footer {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 0.9rem;
-  color: var(--text-light);
-}
+/* Bottom Links */
+.form-extra-links { text-align: center; margin-top: 30px; border-top: 1px solid #f0f0f0; padding-top: 25px; }
+.form-extra-links p { font-size: 14px; color: #666; margin-bottom: 20px; }
+.form-extra-links a { color: #0c831f; font-weight: 700; text-decoration: none; }
 
-.auth-footer a {
-  color: var(--primary-green);
-  text-decoration: none;
-  font-weight: 600;
-}
+.farmer-cta { background: #f0f7f0; padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 13px; }
+.farmer-link { color: #0c831f !important; font-weight: 800; display: flex; align-items: center; gap: 4px; }
 
-.auth-footer a:hover {
-  text-decoration: underline;
+/* Spinner Animation */
+.spinner { animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Mobile View */
+@media (max-width: 1024px) {
+  .visual-side { display: none; }
+  .signup-split { flex-direction: column; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-wrapper-box { padding: 30px; border-radius: 0; }
 }
 
 /* Login Page CSS */
 
-/* Add this to your existing CSS file */
+/* Login specific background if you want a different image than signup */
+.login-bg {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+              url('https://images.unsplash.com/photo-1595246140625-573b715d11dc?q=80&w=1200&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+}
 
-.error-message {
-  background-color: #fee2e2; /* Light Red */
-  color: #ef4444;           /* Dark Red */
-  padding: 10px;
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auth-error-box {
+  background: #fff5f5;
+  border-left: 4px solid #ff5252;
+  padding: 12px;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #d32f2f;
+  font-size: 14px;
+  font-weight: 600;
   margin-bottom: 20px;
-  font-size: 0.9rem;
-  text-align: center;
-  border: 1px solid #fca5a5;
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Rest of the styles are inherited from your Signup CSS */
+
+
+/* Farmer CSS */
+
+/* Farmer Specific Visual Panel Background */
+.farmer-bg {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+              url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=1200&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Ensure form-grid works for small fields */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* Extra touch for the farmer-link (Buyer redirect) */
+.farmer-link {
+  color: #0c831f !important;
+  font-weight: 800;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }

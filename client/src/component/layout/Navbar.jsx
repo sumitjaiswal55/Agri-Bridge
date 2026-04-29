@@ -64,8 +64,10 @@ const Navbar = () => {
         <div className="navbar-inner">
           {/* Logo Section */}
           <Link to="/" className="navbar-logo" onClick={closeMenu}>
-            <span className="logo-agri">Agri</span>
-            <span className="logo-bridge">Bridge</span>
+            <div className="nav-brand" onClick={() => navigate('/')}>
+          <div className="logo-box">A</div>
+          <h1>Agri<span>Bridge</span></h1>
+        </div>
           </Link>
 
           {/* Desktop Navigation Links */}
@@ -86,21 +88,6 @@ const Navbar = () => {
             </ul>
           </div>
 
-          {/* Desktop Auth Buttons */}
-          <div className="navbar-desktop-buttons">
-            <button
-              className="navbar-btn navbar-btn-login"
-              onClick={() => handleNavClick("/login")}
-            >
-              Login
-            </button>
-            <button
-              className="navbar-btn navbar-btn-signup"
-              onClick={() => handleNavClick("/signup")}
-            >
-              Register
-            </button>
-          </div>
 
           {/* Mobile Hamburger Menu */}
           <button

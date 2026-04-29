@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
-  MapPin, Building2, User, Phone, Mail, Lock, 
-  ArrowRight, CheckCircle2, Loader2 
+  MapPin, User, Phone, Mail, Lock, 
+  ArrowRight, Sprout, Wheat, Loader2, CheckCircle 
 } from "lucide-react";
 import "./Auth.css";
 import Navbar from "../../component/layout/Navbar.jsx";
 import Footer from "../../component/layout/Footer.jsx";
 
-const Signup = () => {
+const FarmerSignup = () => {
   const navigate = useNavigate();
 
   // --- Form State ---
@@ -20,7 +20,7 @@ const Signup = () => {
     address: "",
     latitude: 0,
     longitude: 0,
-    businessName: "",
+    farmSize: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -32,7 +32,7 @@ const Signup = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // --- GPS Reverse Geocoding (Address Detection) ---
+  // --- GPS Address Detection ---
   const fetchAddress = async (lat, lon) => {
     try {
       const response = await fetch(
@@ -46,11 +46,10 @@ const Signup = () => {
           latitude: lat,
           longitude: lon
         }));
-        setLocationStatus("Address detected successfully!");
+        setLocationStatus("Farm Location Verified ✅");
       }
     } catch (error) {
-      console.error("Geocoding Error:", error);
-      setLocationStatus("Coordinates found, but address fetch failed.");
+      setLocationStatus("GPS coordinates found!");
     } finally {
       setIsLocating(false);
     }
@@ -58,26 +57,22 @@ const Signup = () => {
 
   const handleLocation = () => {
     if (!navigator.geolocation) {
-      setLocationStatus("GPS not supported by browser.");
+      setLocationStatus("GPS not supported.");
       return;
     }
     setIsLocating(true);
-    setLocationStatus("Accessing GPS...");
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        fetchAddress(lat, lon);
+        fetchAddress(position.coords.latitude, position.coords.longitude);
       },
-      (error) => {
+      () => {
         setIsLocating(false);
-        setLocationStatus("Permission denied or GPS off.");
-      },
-      { enableHighAccuracy: true }
+        setLocationStatus("Failed to get location.");
+      }
     );
   };
 
-  // --- Form Submit Handler ---
+  // --- Submit Handler ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -87,13 +82,16 @@ const Signup = () => {
       email: formData.email,
       password: formData.password,
       phone: formData.phone.toString(),
-      role: "buyer", // Buyer First Approach
+      role: "farmer",
       location: {
         type: "Point",
         coordinates: [parseFloat(formData.longitude), parseFloat(formData.latitude)],
         address: formData.address,
       },
-      businessName: formData.businessName,
+      farmDetails: {
+        size: parseFloat(formData.farmSize) || 0,
+        crops: [], // Initially empty
+      }
     };
 
     try {
@@ -103,16 +101,15 @@ const Signup = () => {
         body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
       if (response.ok) {
-        alert("Registration Successful! Please Login.");
+        alert("Farmer Account Created! Welcome to AgriBridge.");
         navigate("/login");
       } else {
+        const data = await response.json();
         alert(data.message || "Registration Failed");
       }
     } catch (error) {
-      console.error("Signup Error:", error);
-      alert("Server Error. Please try again later.");
+      alert("Server error, please try again.");
     } finally {
       setLoading(false);
     }
@@ -125,61 +122,62 @@ const Signup = () => {
       <main className="signup-main-content">
         <div className="signup-split">
           
-          {/* LEFT: Marketing Visual Section */}
-          <div className="visual-side">
+          {/* LEFT: Farmer Marketing Side */}
+          <div className="visual-side farmer-bg">
             <div className="visual-overlay-content">
-              <span className="b2b-tag">B2B Sourcing Platform</span>
-              <h1>Source Fresh. <br/>Scale Faster.</h1>
-              <p>Direct farm-to-business supply chain for Hotels, Restaurants & Cafes.</p>
+              <span className="b2b-tag">Seller Dashboard</span>
+              <h1>Apni Fasal, <br/>Sahi Daam.</h1>
+              <p>Directly sell your harvest to big hotels and retailers across India. No more middleman commissions.</p>
               
               <ul className="benefit-list">
-                <li><CheckCircle2 size={18} color="#0c831f" /> Transparent Mandi Pricing</li>
-                <li><CheckCircle2 size={18} color="#0c831f" /> Verified Quality Checks</li>
-                <li><CheckCircle2 size={18} color="#0c831f" /> Express Logistics Support</li>
+                <li><Wheat size={18} color="#0c831f" /> List your crops in 2 minutes</li>
+                <li><CheckCircle size={18} color="#0c831f" /> Get paid directly in Bank</li>
+                <li><CheckCircle size={18} color="#0c831f" /> Free Quality Certification</li>
               </ul>
             </div>
           </div>
 
-          {/* RIGHT: Registration Form Section */}
+          {/* RIGHT: Farmer Signup Form */}
           <div className="form-side">
             <div className="form-wrapper-box">
               <div className="form-intro">
-                <h2>Create Business Account</h2>
-                <p>Register your hotel/restaurant for direct farm access.</p>
+                <h2>Farmer Registration</h2>
+                <p>Register to start selling your fresh produce</p>
               </div>
 
               <form onSubmit={handleSubmit} className="professional-form">
                 <div className="form-grid">
                   <div className="input-box">
-                    <label><User size={16}/> Full Name</label>
-                    <input type="text" name="name" placeholder="Enter your name" required onChange={handleChange} />
+                    <label><User size={16}/> Farmer Name</label>
+                    <input type="text" name="name" placeholder="Full Name" required onChange={handleChange} />
                   </div>
                   <div className="input-box">
-                    <label><Phone size={16}/> Phone Number</label>
-                    <input type="text" name="phone" placeholder="10-digit mobile" maxLength="10" required onChange={handleChange} />
+                    <label><Phone size={16}/> Mobile Number</label>
+                    <input type="text" name="phone" placeholder="10 digits" maxLength="10" required onChange={handleChange} />
                   </div>
                 </div>
 
-                <div className="input-box">
-                  <label><Mail size={16}/> Email Address</label>
-                  <input type="email" name="email" placeholder="name@business.com" required onChange={handleChange} />
-                </div>
-
-                <div className="input-box">
-                  <label><Building2 size={16}/> Business / Hotel Name</label>
-                  <input type="text" name="businessName" placeholder="e.g. Royal Dhaba" required onChange={handleChange} />
+                <div className="form-grid">
+                  <div className="input-box">
+                    <label><Mail size={16}/> Email (Optional)</label>
+                    <input type="email" name="email" placeholder="example@mail.com" onChange={handleChange} />
+                  </div>
+                  <div className="input-box">
+                    <label><Sprout size={16}/> Farm Size (Acres)</label>
+                    <input type="number" name="farmSize" placeholder="e.g. 5" required onChange={handleChange} />
+                  </div>
                 </div>
 
                 <div className="input-box location-group">
-                  <label><MapPin size={16}/> Delivery Address</label>
+                  <label><MapPin size={16}/> Farm / Village Address</label>
                   <div className="location-input-wrapper">
                     <textarea 
                       name="address" 
-                      placeholder="Type address or use GPS..." 
+                      placeholder="Enter Village Name & Area..." 
                       value={formData.address}
                       required 
                       onChange={handleChange}
-                      rows="3"
+                      rows="2"
                     ></textarea>
                     
                     <button 
@@ -188,12 +186,8 @@ const Signup = () => {
                       onClick={handleLocation}
                       disabled={isLocating}
                     >
-                      {isLocating ? (
-                        <Loader2 className="spinner" size={16} />
-                      ) : (
-                        <MapPin size={16} />
-                      )}
-                      {formData.latitude ? "Re-detect" : "Auto-detect"}
+                      {isLocating ? <Loader2 className="spinner" size={16} /> : <MapPin size={16} />}
+                      {formData.latitude ? "Verified" : "Detect Farm"}
                     </button>
                   </div>
                   {locationStatus && (
@@ -204,20 +198,20 @@ const Signup = () => {
                 </div>
 
                 <div className="input-box">
-                  <label><Lock size={16}/> Create Password</label>
-                  <input type="password" name="password" placeholder="Strong password" required onChange={handleChange} />
+                  <label><Lock size={16}/> Create Login Password</label>
+                  <input type="password" name="password" placeholder="Create a strong password" required onChange={handleChange} />
                 </div>
 
                 <button type="submit" className="submit-btn-pro" disabled={loading}>
-                  {loading ? "Registering..." : "Complete Registration"} <ArrowRight size={18} />
+                  {loading ? "Registering..." : "Start Selling Now"} <ArrowRight size={18} />
                 </button>
               </form>
 
               <div className="form-extra-links">
-                <p>Already have an account? <Link to="/login">Login</Link></p>
+                <p>Already a member? <Link to="/login">Login</Link></p>
                 <div className="farmer-cta">
-                  <span>Are you a Farmer?</span>
-                  <Link to="/farmer-signup" className="farmer-link">Register as Farmer <ArrowRight size={14}/></Link>
+                  <span>Are you a Merchant/Hotel?</span>
+                  <Link to="/signup" className="farmer-link">Buyer Signup <ArrowRight size={14}/></Link>
                 </div>
               </div>
             </div>
@@ -231,4 +225,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default FarmerSignup;

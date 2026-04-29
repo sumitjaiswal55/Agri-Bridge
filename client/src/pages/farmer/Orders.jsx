@@ -33,23 +33,21 @@ const Orders = () => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        // Transform listings into orders format
         if (response.data.success && Array.isArray(response.data.data)) {
-          const orders = response.data.data.map((listing, index) => ({
-            id: `ORD-${7780 + index}`,
-            customer: ["Hotel Radisson", "Fresh Mart", "Ramesh Wholesaler", "Local Mandi Agent"][index % 4],
-            item: listing.name,
-            qty: `${listing.quantityAvailable} ${listing.quantity}`,
-            price: `₹${(listing.pricePerUnit * listing.quantityAvailable).toLocaleString()}`,
-            date: new Date(listing.createdAt || Date.now()).toISOString().split('T')[0],
-            status: ['Pending', 'Shipped', 'Delivered'][index % 3],
-            payment: ['Paid', 'COD'][index % 2],
-            buyerId: listing.seller,
-            phone: "+91 9876543210",
-            location: "Nagpur, Maharashtra"
+          const ordersData = response.data.data.map((order) => ({
+            id: order._id.slice(-6).toUpperCase(), // Short ID
+            customer: order.buyer?.name || "Unknown Buyer",
+            item: order.item,
+            qty: `${order.quantity} ${order.unit}`,
+            price: `₹${order.totalPrice.toLocaleString()}`,
+            date: new Date(order.createdAt).toISOString().split('T')[0],
+            status: order.status,
+            payment: order.paymentStatus || "COD",
+            phone: order.buyer?.phone || "N/A",
+            location: order.deliveryAddress?.fullAddress || order.buyer?.location?.address || "Unknown"
           }));
-          setOrders(orders);
-          setFilteredOrders(orders);
+          setOrders(ordersData);
+          setFilteredOrders(ordersData);
         }
       } catch (err) {
         console.error('Error fetching orders:', err);

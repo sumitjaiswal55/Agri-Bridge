@@ -16,17 +16,19 @@ import AddListing from "./pages/farmer/AddListing";
 import MyListing from "./pages/farmer/MyListing";
 import Transaction from "./pages/farmer/Transaction";
 import Orders from "./pages/farmer/Orders";
-import BuyerDashboard from "./pages/buyer/BuyerDashboard";
-import ProductDetails from "./pages/buyer/Products";
+import BuyerDashboard from "./pages/buyer/Home";
+import ProductDetails from "./pages/buyer/ProductDetails";
 import Profile from "./pages/buyer/Profile";
 import Cart from "./pages/buyer/Cart";
+import FarmerSignup from "./pages/auth/FarmerSignup"
 
 function App() {
   return (
     <>
       <div>
         <Routes>
-          <Route path="/" element={<HomeMain />} />
+          <Route path="/" element={<BuyerDashboard />} />
+          <Route path="/corporate" element={<HomeMain />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
@@ -34,6 +36,8 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/farmer-signup" element={<FarmerSignup />} />
+
           <Route
             path="/dashboard"
             element={

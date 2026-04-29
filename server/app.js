@@ -30,11 +30,18 @@ app.use(express.json());
 
 // Routes
 app.use("/auth", require("./routes/userRoutes.js"));
+app.use("/api/orders", require("./routes/orderRoutes.js"));
 app.use("/api", require("./routes/productRoutes.js"));
 
 app.get("/", (req, res) => res.send("AgriBridge API is Live!"));
 
 // Database connect karke app export kijiye
 connectDB();
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 
 module.exports = app;

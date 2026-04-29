@@ -1,4 +1,5 @@
-const Listing = require("../models/Listing.js"); // File path check karlena
+const Listing = require("../models/Listing.js");
+const User = require("../models/User.js");
 
 // 1. Create Listing (With Image Upload)
 exports.createListing = async (req, res) => {
@@ -119,11 +120,28 @@ exports.deleteListing = async (req, res) => {
 // 4. Get All Listings (Home Page ke liye)
 exports.getAllListings = async (req, res) => {
     try {
-        // .populate() use karke humne seller ka data join kiya
-        // 'name' ka matlab hai humein user object me se sirf uska naam chahiye, password ya email nahi
-        const listings = await Listing.find({ isActive: true })
+        const { lat, lng, distance } = req.query;
+        let query = { isActive: true };
+
+        if (lat && lng && distance) {
+            // Find farmers within maxDistance (in meters)
+            const usersNear = await User.find({
+                location: {
+                    $near: {
+                        $geometry: { type: "Point", coordinates: [parseFloat(lng), parseFloat(lat)] },
+                        $maxDistance: parseInt(distance) * 1000 // Convert km to meters
+                    }
+                },
+                role: "farmer"
+            }).select('_id');
+            
+            const sellerIds = usersNear.map(u => u._id);
+            query.seller = { $in: sellerIds };
+        }
+
+        const listings = await Listing.find(query)
             .sort({ createdAt: -1 })
-            .populate('seller', 'name'); 
+            .populate('seller', 'name location'); 
         
         res.status(200).json({
             success: true,

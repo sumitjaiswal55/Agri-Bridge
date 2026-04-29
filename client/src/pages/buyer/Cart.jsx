@@ -1,42 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Trash2, Plus, Minus, MapPin, ArrowRight, ShoppingBag, ShieldCheck } from 'lucide-react';
-
+import { Trash2, Plus, Minus, MapPin, ArrowRight, ShoppingBag, ShieldCheck, Truck } from 'lucide-react';
+import "./Buyer.css";
 
 const Cart = () => {
   const navigate = useNavigate();
-
-  // --- Mock User Address ---
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState({
-    name: "Sumit Jaiswal",
+    name: "User",
     type: "Home",
-    fullAddress: "H.No 45, Near Ram Mandir, Rampur Village, Nagpur, Maharashtra - 440001",
-    phone: "7084525212"
+    fullAddress: "Loading address...",
+    phone: ""
   });
 
-  // --- Mock Cart Items ---
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Sharbati Wheat (MP Special)",
-      price: 2600,
-      unit: "Quintal",
-      image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=300&q=80",
-      quantity: 1,
-      seller: "Ram Charan"
-    },
-    {
-      id: 2,
-      name: "Organic Turmeric",
-      price: 120,
-      unit: "Kg",
-      image: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=300&q=80",
-      quantity: 5,
-      seller: "Vedic Farms"
+  useEffect(() => {
+    const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartItems(savedCart);
+    
+    const user = JSON.parse(localStorage.getItem('user'));
+    if(user) {
+      setAddress({
+        name: user.name,
+        type: "Mandi/Shop",
+        fullAddress: user.location?.address || "Nagpur Mandi Main Gate, Section A",
+        phone: user.phone || "9876543210"
+      });
     }
-  ]);
+  }, []);
 
-  // --- Handlers ---
+  // Sync Cart to LocalStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
+
   const updateQuantity = (id, change) => {
     setCartItems(items =>
       items.map(item => {
@@ -53,134 +50,157 @@ const Cart = () => {
     setCartItems(items => items.filter(item => item.id !== id));
   };
 
-  // --- Calculations ---
+  const handleCheckout = async () => {
+    if(cartItems.length === 0) return;
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem('token');
+      // Scalable way: Bhejte waqt orders ko group kar sakte hain seller ke basis par
+      for(const item of cartItems) {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/orders/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({
+              sellerId: item.sellerId,
+              listingId: item.id,
+              item: item.name,
+              quantity: item.quantity,
+              unit: item.unit,
+              totalPrice: item.price * item.quantity,
+              deliveryAddress: address,
+              paymentStatus: "COD"
+          })
+        });
+      }
+      
+      setCartItems([]);
+      localStorage.removeItem('cart');
+      alert("Order placed successfully! AgriBridge Logistics will contact you shortly.");
+      navigate('/');
+    } catch(err) {
+      alert("Checkout failed. Check your connection.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-  const platformFee = 50; // Fixed fee for example
-  const deliveryFee = 0; // Free for now
+  const platformFee = 20; // Nominal AgriBridge fee
+  const deliveryFee = subtotal > 1000 ? 0 : 50; // Incentive for bulk buy
   const total = subtotal + platformFee + deliveryFee;
 
   if (cartItems.length === 0) {
     return (
-      <div className="empty-cart-container">
-        <div className="empty-cart-box">
-          <ShoppingBag size={64} color="#ccc" />
-          <h2>Your Cart is Empty</h2>
-          <p>Looks like you haven't added any produce yet.</p>
-          <button className="continue-shopping-btn" onClick={() => navigate('/')}>
-            Explore Mandi
-          </button>
+      <div className="empty-cart-view">
+        <div className="empty-content">
+          <div className="empty-icon-box"><ShoppingBag size={80} /></div>
+          <h2>Your cart is as empty as a dry field!</h2>
+          <p>Add some fresh farm produce to start your order.</p>
+          <button className="go-home-btn" onClick={() => navigate('/')}>Browse Mandi</button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="cart-page">
-      <div className="cart-container">
-        
-        <h1 className="page-title">My Cart ({cartItems.length})</h1>
+    <div className="cart-page-wrapper">
+      <div className="cart-content-container">
+        <header className="cart-header-row">
+          <h1>Review Order <span>({cartItems.length} items)</span></h1>
+        </header>
 
-        <div className="cart-layout">
-          
-          {/* --- LEFT SIDE: Address & Items --- */}
-          <div className="cart-main">
+        <div className="cart-main-grid">
+          {/* LEFT: Items & Delivery */}
+          <div className="cart-left-col">
             
-            {/* 1. Address Section */}
-            <div className="section-card address-card">
-              <div className="card-header">
-                <h3>Delivery Address</h3>
-                <button className="change-btn">Change</button>
+            <div className="cart-section address-section">
+              <div className="section-head">
+                <MapPin size={20} className="icon-green" />
+                <h3>Delivery to <span>{address.type}</span></h3>
+                <button className="edit-link">Edit</button>
               </div>
-              <div className="address-content">
-                <div className="icon-circle">
-                  <MapPin size={20} />
-                </div>
-                <div className="address-details">
-                  <div className="name-row">
-                    <span className="addr-type">{address.type}</span>
-                    <span className="addr-name">{address.name}</span>
-                    <span className="addr-phone">+91 {address.phone}</span>
-                  </div>
-                  <p className="full-addr">{address.fullAddress}</p>
-                </div>
+              <div className="address-info-box">
+                <strong>{address.name} • +91 {address.phone}</strong>
+                <p>{address.fullAddress}</p>
               </div>
             </div>
 
-            {/* 2. Cart Items List */}
-            <div className="section-card items-card">
+            <div className="cart-section items-section">
+              <div className="section-head">
+                <Truck size={20} className="icon-green" />
+                <h3>Shipment from Farmer Direct</h3>
+              </div>
               {cartItems.map((item) => (
-                <div key={item.id} className="cart-item">
-                  
-                  {/* Image */}
-                  <div className="item-image">
-                    <img src={item.image} alt={item.name} />
+                <div key={item.id} className="cart-product-row">
+                  <div className="p-img"><img src={item.image} alt="" /></div>
+                  <div className="p-info">
+                    <h4>{item.name}</h4>
+                    <p>Farm: {item.seller || 'Verified Farmer'}</p>
+                    <div className="p-price">₹{item.price} <span>/ {item.unit}</span></div>
                   </div>
-
-                  {/* Details */}
-                  <div className="item-details">
-                    <h4 className="item-name">{item.name}</h4>
-                    <span className="item-seller">Sold by: {item.seller}</span>
-                    <div className="item-price">
-                      ₹{item.price} <span className="item-unit">/ {item.unit}</span>
-                    </div>
-                  </div>
-
-                  {/* Controls */}
-                  <div className="item-actions">
-                    <div className="quantity-controls">
-                      <button onClick={() => updateQuantity(item.id, -1)} disabled={item.quantity === 1}>
-                        <Minus size={14} />
-                      </button>
+                  <div className="p-controls">
+                    <div className="qty-box">
+                      <button onClick={() => updateQuantity(item.id, -1)}><Minus size={14}/></button>
                       <span>{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, 1)}>
-                        <Plus size={14} />
-                      </button>
+                      <button onClick={() => updateQuantity(item.id, 1)}><Plus size={14}/></button>
                     </div>
-                    <button className="remove-btn" onClick={() => removeItem(item.id)}>
-                      <Trash2 size={18} />
-                    </button>
+                    <button className="del-btn" onClick={() => removeItem(item.id)}><Trash2 size={18}/></button>
                   </div>
+                  <div className="p-total">₹{item.price * item.quantity}</div>
                 </div>
               ))}
             </div>
-          </div>
 
-          {/* --- RIGHT SIDE: Order Summary --- */}
-          <div className="cart-sidebar">
-            <div className="section-card summary-card">
-              <h3>Order Summary</h3>
-              
-              <div className="bill-row">
-                <span>Item Total</span>
-                <span>₹{subtotal.toLocaleString()}</span>
-              </div>
-              <div className="bill-row">
-                <span>Platform Fee</span>
-                <span>₹{platformFee}</span>
-              </div>
-              <div className="bill-row success-text">
-                <span>Delivery Fee</span>
-                <span>Free</span>
-              </div>
-
-              <div className="divider"></div>
-
-              <div className="bill-row total-row">
-                <span>Total Amount</span>
-                <span>₹{total.toLocaleString()}</span>
-              </div>
-
-              <button className="checkout-btn">
-                Proceed to Pay <ArrowRight size={18} />
-              </button>
-
-              <div className="safety-badge">
-                <ShieldCheck size={16} />
-                <span>Safe & Secure Payments</span>
-              </div>
+            <div className="cart-trust-footer">
+              <ShieldCheck size={18} />
+              <span>AgriBridge ensures 100% Quality Check at pickup point.</span>
             </div>
           </div>
 
+          {/* RIGHT: Bill Details */}
+          <div className="cart-right-col">
+            <div className="bill-card">
+              <h3>Bill Details</h3>
+              <div className="bill-item">
+                <span>Item Total</span>
+                <span>₹{subtotal.toLocaleString()}</span>
+              </div>
+              <div className="bill-item">
+                <span>Platform Handling Fee</span>
+                <span>₹{platformFee}</span>
+              </div>
+              <div className="bill-item">
+                <span>Delivery Charges</span>
+                <span className={deliveryFee === 0 ? "free-text" : ""}>
+                  {deliveryFee === 0 ? "FREE" : `₹${deliveryFee}`}
+                </span>
+              </div>
+              
+              <div className="bill-divider"></div>
+              
+              <div className="bill-total">
+                <span>To Pay</span>
+                <span>₹{total.toLocaleString()}</span>
+              </div>
+
+              <div className="payment-method-box">
+                <label>Payment Method</label>
+                <div className="method-pill">Cash on Delivery (COD)</div>
+              </div>
+
+              <button 
+                className={`main-checkout-btn ${loading ? 'loading' : ''}`} 
+                onClick={handleCheckout}
+                disabled={loading}
+              >
+                {loading ? "Placing Order..." : "Place Order Now"} <ArrowRight size={20} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
